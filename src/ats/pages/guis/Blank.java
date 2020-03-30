@@ -11,7 +11,9 @@ import java.awt.event.KeyEvent;
 import java.sql.*;
 
 public class Blank extends TablePage {
-
+    //================================================================================
+    //region Properties
+    //================================================================================
     private App app;
     private String blankID;
 
@@ -22,19 +24,27 @@ public class Blank extends TablePage {
     private JTextField staffIDField;
     private JButton reassignButton;
     private JPanel managerPanel;
+    //endregion
 
+    //================================================================================
+    //region Constructor
+    //================================================================================
     public Blank(App app, String blankID, boolean managerView) {
         this.app = app;
         this.blankID = blankID;
 
         populateTable();
 
+        // hides the manager tools when viewing in sale mode
         if (!managerView) {
             managerPanel.remove(staffIDField);
             managerPanel.remove(reassignButton);
             mainPanel.remove(managerPanel);
         }
 
+        //================================================================================
+        //region Button Listeners
+        //================================================================================
         reassignButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -44,7 +54,12 @@ public class Blank extends TablePage {
 
         logoutButton.addActionListener(e -> app.logout());
         backButton.addActionListener(e -> app.toBlanks(managerView));
+        //endregion
 
+        //================================================================================
+        //region Other Listeners
+        //================================================================================
+        // prevents invalid entries in the staffID field
         staffIDField.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent ke) {
@@ -56,13 +71,23 @@ public class Blank extends TablePage {
                 }
             }
         });
+        //endregion
     }
+    //endregion
 
+    //================================================================================
+    //region Accessors
+    //================================================================================
     @Override
     public JPanel getMainPanel() {
         return mainPanel;
     }
+    //endregion
 
+    //================================================================================
+    //region Methods
+    //================================================================================
+    // populates the table for the given blank
     private void populateTable() {
         String[] credentials = app.getDBCredentials();
 
@@ -77,4 +102,5 @@ public class Blank extends TablePage {
             sqle.printStackTrace();
         }
     }
+    //endregion
 }

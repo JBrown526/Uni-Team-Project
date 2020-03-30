@@ -60,8 +60,9 @@ public class App {
     //endregion
 
     //================================================================================
-    //region Window Navigation
+    //region Navigation
     //================================================================================
+    // logs user into appropriate landing page
     public void login(int id, String role) {
         staffID = id;
         staffRole = role;
@@ -95,6 +96,7 @@ public class App {
         changeWindow(new Blank(this, blankID, managerView));
     }
 
+    // returns user to login page and clears access credentials
     public void logout() {
         staffID = 0;
         staffRole = null;
@@ -102,6 +104,9 @@ public class App {
     }
     //endregion
 
+    //================================================================================
+    //region Other Methods
+    //================================================================================
     private void changeWindow(Page page) {
         Dimension d = window.getSize();
         window.remove(currentPage.getMainPanel());
@@ -111,8 +116,13 @@ public class App {
         window.pack();
         window.setSize(d);
     }
+    //endregion
 
+    //================================================================================
+    //region Runnable Methods
+    //================================================================================
     public static void main(String[] args) {
         new App();
     }
+    //endregion
 }

@@ -9,15 +9,25 @@ import java.awt.event.KeyEvent;
 import java.sql.*;
 
 public class Login extends Page {
+    //================================================================================
+    //region Properties
+    //================================================================================
     private String[] credentials;
     private JTextField staffIDField;
     private JPasswordField passwordField;
     private JButton submitButton;
     private JPanel mainPanel;
+    //endregion
 
+    //================================================================================
+    //region Constructor
+    //================================================================================
     public Login(App app) {
         credentials = app.getDBCredentials();
 
+        //================================================================================
+        //region Button Listeners
+        //================================================================================
         submitButton.addActionListener(e -> {
             int id = Integer.parseInt(staffIDField.getText());
             String pwd = String.valueOf(passwordField.getPassword());
@@ -46,7 +56,11 @@ public class Login extends Page {
                 sqle.printStackTrace();
             }
         });
+        //endregion
 
+        //================================================================================
+        //region Other Listeners
+        //================================================================================
         // prevents invalid entries in the staffID field
         staffIDField.addKeyListener(new KeyAdapter() {
             @Override
@@ -59,10 +73,16 @@ public class Login extends Page {
                 }
             }
         });
+        //endregion
     }
+    //endregion
 
+    //================================================================================
+    //region Accessors
+    //================================================================================
     @Override
     public JPanel getMainPanel() {
         return mainPanel;
     }
+    //endregion
 }

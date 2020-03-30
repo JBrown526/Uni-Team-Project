@@ -12,6 +12,9 @@ import java.sql.*;
 
 public class Blanks extends TablePage {
 
+    //================================================================================
+    //region Properties
+    //================================================================================
     private App app;
     private boolean managerView;
     private String selectedBlank;
@@ -25,13 +28,18 @@ public class Blanks extends TablePage {
     private JButton viewBlankButtonManager;
     private JPanel staffPanel;
     private JButton viewBlankButtonStaff;
+    //endregion
 
+    //================================================================================
+    //region Constructor
+    //================================================================================
     public Blanks(App app, boolean managerView) {
         this.app = app;
         this.managerView = managerView;
 
         populateTable();
 
+        // hides manager tools in sales mode and sales tools in manager mode
         if (managerView) {
             staffPanel.remove(viewBlankButtonStaff);
             mainPanel.remove(staffPanel);
@@ -41,6 +49,9 @@ public class Blanks extends TablePage {
             mainPanel.remove(managerPanel);
         }
 
+        //================================================================================
+        //region Button Listeners
+        //================================================================================
         generateBlanksButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -72,7 +83,11 @@ public class Blanks extends TablePage {
                 app.toTravelAgent();
             }
         });
+        //endregion
 
+        //================================================================================
+        //region Other Listeners
+        //================================================================================
         blankTable.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -80,16 +95,27 @@ public class Blanks extends TablePage {
                 selectedBlank = String.valueOf(blankTable.getValueAt(row, 1));
             }
         });
+        //endregion
     }
+    //endregion
 
+    //================================================================================
+    //region Accessors
+    //================================================================================
     @Override
     public JPanel getMainPanel() {
         return mainPanel;
     }
+    //endregion
 
+    //================================================================================
+    //region Methods
+    //================================================================================
+    // populates the table with a specified selection of blanks
     private void populateTable() {
         String[] credentials = app.getDBCredentials();
         String sql;
+        // shows all blanks if in manager mode or staff members assigned blanks if in sales mode
         if (managerView) {
             sql = "SELECT * FROM blank";
         } else {
@@ -109,4 +135,5 @@ public class Blanks extends TablePage {
             sqle.printStackTrace();
         }
     }
+    //endregion
 }

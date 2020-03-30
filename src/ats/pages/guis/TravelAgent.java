@@ -8,14 +8,24 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class TravelAgent extends Page {
+    //================================================================================
+    //region Properties
+    //================================================================================
     private JButton blanksButton;
     private JButton transactionButton;
     private JButton customersButton;
     private JButton backButton;
     private JPanel mainPanel;
     private JButton logoutButton;
+    //endregion
 
+    //================================================================================
+    //region Constructor
+    //================================================================================
     public TravelAgent(App app) {
+        //================================================================================
+        //region Button Listeners
+        //================================================================================
         blanksButton.addActionListener(e -> app.toBlanks(false));
 
         customersButton.addActionListener(new ActionListener() {
@@ -41,10 +51,14 @@ public class TravelAgent extends Page {
             }
         });
         logoutButton.addActionListener(e -> app.logout());
+        //endregion
     }
+    //endregion
 
+    //region Accessors
     @Override
     public JPanel getMainPanel() {
         return mainPanel;
     }
+    //endregion
 }
