@@ -1,4 +1,4 @@
-package ats;
+package ats.pages;
 
 import javax.swing.table.DefaultTableModel;
 import java.sql.ResultSet;

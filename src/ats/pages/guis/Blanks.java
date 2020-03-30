@@ -1,22 +1,30 @@
-package ats;
+package ats.pages.guis;
+
+import ats.App;
+import ats.pages.TablePage;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.*;
 
 public class Blanks extends TablePage {
 
     private App app;
     private boolean managerView;
+    private String selectedBlank;
 
     private JButton backButton;
     private JButton logoutButton;
     private JPanel mainPanel;
     private JTable blankTable;
-    private JButton assignBlanksButton;
     private JButton generateBlanksButton;
     private JPanel managerPanel;
+    private JButton viewBlankButtonManager;
+    private JPanel staffPanel;
+    private JButton viewBlankButtonStaff;
 
     public Blanks(App app, boolean managerView) {
         this.app = app;
@@ -24,25 +32,39 @@ public class Blanks extends TablePage {
 
         populateTable();
 
-        if (!managerView) {
-            managerPanel.remove(assignBlanksButton);
+        if (managerView) {
+            staffPanel.remove(viewBlankButtonStaff);
+            mainPanel.remove(staffPanel);
+        } else {
             managerPanel.remove(generateBlanksButton);
+            mainPanel.remove(viewBlankButtonManager);
             mainPanel.remove(managerPanel);
         }
 
-        assignBlanksButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
         generateBlanksButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                //TODO
             }
         });
 
+        viewBlankButtonStaff.addActionListener(e -> {
+            if (selectedBlank != null) {
+                app.toBlank(selectedBlank, false);
+            } else {
+                JOptionPane.showMessageDialog(null, "Please select a blank");
+            }
+        });
+
+        viewBlankButtonManager.addActionListener(e -> {
+            if (selectedBlank != null) {
+                app.toBlank(selectedBlank, true);
+            } else {
+                JOptionPane.showMessageDialog(null, "Please select a blank");
+            }
+        });
+
+        logoutButton.addActionListener(e -> app.logout());
         backButton.addActionListener(e -> {
             if (managerView) {
                 app.toOfficeManager();
@@ -50,7 +72,14 @@ public class Blanks extends TablePage {
                 app.toTravelAgent();
             }
         });
-        logoutButton.addActionListener(e -> app.logout());
+
+        blankTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int row = blankTable.getSelectedRow();
+                selectedBlank = String.valueOf(blankTable.getValueAt(row, 1));
+            }
+        });
     }
 
     @Override

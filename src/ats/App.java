@@ -1,5 +1,8 @@
 package ats;
 
+import ats.pages.*;
+import ats.pages.guis.*;
+
 import javax.swing.*;
 
 import java.awt.*;

@@ -1,4 +1,7 @@
-package ats;
+package ats.pages.guis;
+
+import ats.App;
+import ats.pages.Page;
 
 import javax.swing.*;
 import java.awt.event.KeyAdapter;
