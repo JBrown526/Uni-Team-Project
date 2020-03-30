@@ -31,13 +31,14 @@ public class TravelAgent extends Page {
         customersButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO
+                //TODO: View customers page(s)
             }
         });
         transactionButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO
+                //TODO: Make transaction page(s)
+                // NOTE: May move to blank page
             }
         });
 

@@ -35,25 +35,25 @@ public class OfficeManager extends Page {
         viewStaffButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO
+                //TODO: View staff page(s)
             }
         });
         generateReportsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO
+                //TODO: Generate reports page
             }
         });
         commissionRatesButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO
+                //TODO: View/Set commission rates page(s)
             }
         });
         exchangeRatesButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO
+                //TODO: View/Set exchange rate page
             }
         });
 
