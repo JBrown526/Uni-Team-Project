@@ -46,6 +46,7 @@ public class Blank extends TablePage {
         reassignButton.addActionListener(e -> {
             int id = Integer.parseInt(staffIDField.getText());
 
+            // TODO: Assignment date
             if (staffExists(id)) {
                 // updates the blank to be assigned to the given staff member
                 try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
