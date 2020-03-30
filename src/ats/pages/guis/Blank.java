@@ -38,9 +38,12 @@ public class Blank extends TablePage {
         reassignButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                //TODO
             }
         });
+
+        logoutButton.addActionListener(e -> app.logout());
+        backButton.addActionListener(e -> app.toBlanks(managerView));
 
         staffIDField.addKeyListener(new KeyAdapter() {
             @Override
@@ -53,9 +56,6 @@ public class Blank extends TablePage {
                 }
             }
         });
-
-        logoutButton.addActionListener(e -> app.logout());
-        backButton.addActionListener(e -> app.toBlanks(managerView));
     }
 
     @Override

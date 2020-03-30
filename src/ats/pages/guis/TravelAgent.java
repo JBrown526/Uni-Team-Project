@@ -21,15 +21,16 @@ public class TravelAgent extends Page {
         customersButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                //TODO
             }
         });
         transactionButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                //TODO
             }
         });
+
         backButton.addActionListener(e -> {
             if (app.getStaffRole().equals("OM")) {
                 app.toOfficeManager();
