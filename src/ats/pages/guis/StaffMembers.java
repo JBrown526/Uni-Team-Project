@@ -13,7 +13,6 @@ import java.sql.*;
 public class StaffMembers extends TablePage {
     private App app;
     private int selectedStaffMember = -1;
-    private boolean adminView;
 
     private JPanel mainPanel;
     private JButton backButton;
@@ -27,7 +26,6 @@ public class StaffMembers extends TablePage {
 
     public StaffMembers(App app, boolean adminView) {
         this.app = app;
-        this.adminView = adminView;
 
         populateTable();
 
@@ -43,7 +41,7 @@ public class StaffMembers extends TablePage {
         newUserButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                //TODO: Create new user page
             }
         });
 

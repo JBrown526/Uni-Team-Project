@@ -48,7 +48,7 @@ public class StaffMember extends TablePage {
         applyButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                //TODO: Change user details functionality
             }
         });
 
