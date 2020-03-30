@@ -31,13 +31,8 @@ public class OfficeManager extends Page {
         //================================================================================
         saleViewButton.addActionListener(e -> app.toTravelAgent());
         viewBlanksButton.addActionListener(e -> app.toBlanks(true));
+        viewStaffButton.addActionListener(e -> app.toStaffMembers(false));
 
-        viewStaffButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //TODO: View staff page(s)
-            }
-        });
         generateReportsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

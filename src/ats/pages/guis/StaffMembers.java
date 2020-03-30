@@ -1,5 +1,6 @@
 package ats.pages.guis;
 
+import ats.App;
 import ats.pages.TablePage;
 
 import javax.swing.*;
@@ -7,9 +8,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.*;
 
 public class StaffMembers extends TablePage {
+    private App app;
     private int selectedStaffMember;
+    private boolean adminView;
 
     private JPanel mainPanel;
     private JButton backButton;
@@ -21,19 +25,12 @@ public class StaffMembers extends TablePage {
     private JPanel managerPanel;
     private JButton viewStaffMemberButtonManager;
 
-    public StaffMembers() {
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+    public StaffMembers(App app, boolean adminView) {
+        this.app = app;
+        this.adminView = adminView;
 
-            }
-        });
-        logoutButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        populateTable();
 
-            }
-        });
         newUserButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -52,6 +49,16 @@ public class StaffMembers extends TablePage {
 
             }
         });
+
+        logoutButton.addActionListener(e -> app.logout());
+        backButton.addActionListener(e -> {
+            if (adminView) {
+                app.toSystemAdministrator();
+            } else {
+                app.toOfficeManager();
+            }
+        });
+
         staffTable.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -64,6 +71,20 @@ public class StaffMembers extends TablePage {
     @Override
     public JPanel getMainPanel() {
         return mainPanel;
+    }
+
+    private void populateTable() {
+        String[] credentials = app.getDBCredentials();
+
+        try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
+            try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM staff")) {
+                try (ResultSet rs = ps.executeQuery()) {
+                    staffTable.setModel(buildTableModel(rs));
+                }
+            }
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+        }
     }
 
 }

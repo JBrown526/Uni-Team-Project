@@ -27,13 +27,8 @@ public class SystemAdministrator extends Page {
         //region Button Listeners
         //================================================================================
         saleViewButton.addActionListener(e -> app.toTravelAgent());
+        viewStaffButton.addActionListener(e -> app.toStaffMembers(true));
 
-        viewStaffButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
         databaseToolsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
