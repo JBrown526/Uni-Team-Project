@@ -52,14 +52,15 @@ public class Blank extends TablePage {
                     try (PreparedStatement ps = conn.prepareStatement("UPDATE ats.blank SET `staff_id` = ? WHERE blank_id = ?;")) {
                         ps.setInt(1, id);
                         ps.setString(2, blankID);
-                        int affected = ps.executeUpdate();
-                        System.out.println(affected);
+                        ps.executeUpdate();
+                        staffIDField.setText("");
                         populateTable();
                     }
                 } catch (SQLException sqle) {
                     sqle.printStackTrace();
                 }
             } else {
+                staffIDField.setText("");
                 JOptionPane.showMessageDialog(null, "This Staff Member is not in the System");
             }
         });
