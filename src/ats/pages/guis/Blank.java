@@ -45,21 +45,8 @@ public class Blank extends TablePage {
         //================================================================================
         reassignButton.addActionListener(e -> {
             int id = Integer.parseInt(staffIDField.getText());
-            boolean staffExists = false;
-            // checks to see if selected staff member is in the system
-            try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
-                try (PreparedStatement ps = conn.prepareStatement("SELECT staff_id FROM staff WHERE staff_id = ?;")) {
-                    ps.setInt(1, id);
-                    try (ResultSet rs = ps.executeQuery()) {
-                        while (rs.next()) {
-                            staffExists = true;
-                        }
-                    }
-                }
-            } catch (SQLException sqle) {
-                sqle.printStackTrace();
-            }
-            if (staffExists) {
+
+            if (staffExists(id)) {
                 // updates the blank to be assigned to the given staff member
                 try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
                     try (PreparedStatement ps = conn.prepareStatement("UPDATE ats.blank SET `staff_id` = ? WHERE blank_id = ?;")) {
@@ -124,6 +111,25 @@ public class Blank extends TablePage {
         } catch (SQLException sqle) {
             sqle.printStackTrace();
         }
+    }
+
+    // checks to see if selected staff member is in the system
+    private boolean staffExists(int id) {
+        boolean staffExists = false;
+
+        try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
+            try (PreparedStatement ps = conn.prepareStatement("SELECT staff_id FROM staff WHERE staff_id = ?;")) {
+                ps.setInt(1, id);
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        staffExists = true;
+                    }
+                }
+            }
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+        }
+        return staffExists;
     }
     //endregion
 }
