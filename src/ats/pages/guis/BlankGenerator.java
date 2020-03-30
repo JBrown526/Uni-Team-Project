@@ -44,6 +44,7 @@ public class BlankGenerator extends Page {
                     for (long i = 0; i < numberToGenerate; i++) {
                         generateBlank(type, nextAvailable + i, date);
                     }
+                    JOptionPane.showMessageDialog(null, "Blanks Successfully Generated");
                 } else {
                     JOptionPane.showMessageDialog(null, "Invalid Date/Date Format supplied. Please use YYYY-MM-DD format");
                 }
