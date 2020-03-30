@@ -86,7 +86,8 @@ public class StaffMembers extends TablePage {
         return mainPanel;
     }
 
-    private void populateTable() {
+    @Override
+    protected void populateTable() {
         String[] credentials = app.getDBCredentials();
 
         try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
@@ -99,5 +100,4 @@ public class StaffMembers extends TablePage {
             sqle.printStackTrace();
         }
     }
-
 }

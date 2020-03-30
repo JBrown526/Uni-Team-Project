@@ -105,7 +105,8 @@ public class Blanks extends TablePage {
     //region Methods
     //================================================================================
     // populates the table with a specified selection of blanks
-    private void populateTable() {
+    @Override
+    protected void populateTable() {
         String[] credentials = app.getDBCredentials();
         String sql;
         // shows all blanks if in manager mode or staff members assigned blanks if in sales mode

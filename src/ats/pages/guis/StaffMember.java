@@ -61,7 +61,8 @@ public class StaffMember extends TablePage {
         return mainPanel;
     }
 
-    private void populateTable() {
+    @Override
+    protected void populateTable() {
         try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
             try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM staff WHERE staff_id = ?")) {
                 ps.setInt(1, staffID);

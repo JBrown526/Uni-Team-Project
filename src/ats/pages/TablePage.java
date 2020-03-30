@@ -8,6 +8,8 @@ import java.util.Vector;
 
 public abstract class TablePage extends Page {
 
+    protected abstract void populateTable();
+
     // Generates a TableModel from a ResultSet
     public static DefaultTableModel buildTableModel(ResultSet rs) throws SQLException {
         ResultSetMetaData metaData = null;

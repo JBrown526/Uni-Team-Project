@@ -97,7 +97,8 @@ public class Blank extends TablePage {
     //region Methods
     //================================================================================
     // populates the table for the given blank
-    private void populateTable() {
+    @Override
+    protected void populateTable() {
         try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
             try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM blank WHERE blank_id = ?")) {
                 ps.setString(1, blankID);
