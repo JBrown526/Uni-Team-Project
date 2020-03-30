@@ -4,8 +4,6 @@ import ats.App;
 import ats.pages.TablePage;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.sql.*;
@@ -14,8 +12,8 @@ public class Blank extends TablePage {
     //================================================================================
     //region Properties
     //================================================================================
-    private App app;
     private String blankID;
+    private String[] credentials;
 
     private JPanel mainPanel;
     private JButton backButton;
@@ -30,8 +28,8 @@ public class Blank extends TablePage {
     //region Constructor
     //================================================================================
     public Blank(App app, String blankID, boolean managerView) {
-        this.app = app;
         this.blankID = blankID;
+        credentials = app.getDBCredentials();
 
         populateTable();
 
@@ -45,10 +43,37 @@ public class Blank extends TablePage {
         //================================================================================
         //region Button Listeners
         //================================================================================
-        reassignButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //TODO
+        reassignButton.addActionListener(e -> {
+            int id = Integer.parseInt(staffIDField.getText());
+            boolean staffExists = false;
+            // checks to see if selected staff member is in the system
+            try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
+                try (PreparedStatement ps = conn.prepareStatement("SELECT staff_id FROM staff WHERE staff_id = ?;")) {
+                    ps.setInt(1, id);
+                    try (ResultSet rs = ps.executeQuery()) {
+                        while (rs.next()) {
+                            staffExists = true;
+                        }
+                    }
+                }
+            } catch (SQLException sqle) {
+                sqle.printStackTrace();
+            }
+            if (staffExists) {
+                // updates the blank to be assigned to the given staff member
+                try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
+                    try (PreparedStatement ps = conn.prepareStatement("UPDATE ats.blank SET `staff_id` = ? WHERE blank_id = ?;")) {
+                        ps.setInt(1, id);
+                        ps.setString(2, blankID);
+                        int affected = ps.executeUpdate();
+                        System.out.println(affected);
+                        populateTable();
+                    }
+                } catch (SQLException sqle) {
+                    sqle.printStackTrace();
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "This Staff Member is not in the System");
             }
         });
 
@@ -89,8 +114,6 @@ public class Blank extends TablePage {
     //================================================================================
     // populates the table for the given blank
     private void populateTable() {
-        String[] credentials = app.getDBCredentials();
-
         try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
             try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM blank WHERE blank_id = ?")) {
                 ps.setString(1, blankID);
