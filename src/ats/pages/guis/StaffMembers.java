@@ -12,7 +12,7 @@ import java.sql.*;
 
 public class StaffMembers extends TablePage {
     private App app;
-    private int selectedStaffMember;
+    private int selectedStaffMember = -1;
     private boolean adminView;
 
     private JPanel mainPanel;
@@ -46,16 +46,20 @@ public class StaffMembers extends TablePage {
 
             }
         });
-        viewStaffMemberButtonAdmin.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
 
+        viewStaffMemberButtonAdmin.addActionListener(e -> {
+            if (selectedStaffMember != -1) {
+                app.toStaffMember(selectedStaffMember, true);
+            } else {
+                JOptionPane.showMessageDialog(null, "Please select a staff member");
             }
         });
-        viewStaffMemberButtonManager.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
 
+        viewStaffMemberButtonManager.addActionListener(e -> {
+            if (selectedStaffMember != -1) {
+                app.toStaffMember(selectedStaffMember, false);
+            } else {
+                JOptionPane.showMessageDialog(null, "Please select a staff member");
             }
         });
 

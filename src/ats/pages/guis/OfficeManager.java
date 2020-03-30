@@ -43,6 +43,7 @@ public class OfficeManager extends Page {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //TODO: View/Set commission rates page(s)
+                // NOTE: May move to staff page
             }
         });
         exchangeRatesButton.addActionListener(new ActionListener() {

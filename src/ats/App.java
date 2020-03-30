@@ -104,6 +104,10 @@ public class App {
         changeWindow(new StaffMembers(this, adminView));
     }
 
+    public void toStaffMember(int staffID, boolean adminView) {
+        changeWindow(new StaffMember(this, staffID, adminView));
+    }
+
     // returns user to login page and clears access credentials
     public void logout() {
         staffID = 0;

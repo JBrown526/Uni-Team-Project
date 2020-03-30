@@ -58,7 +58,7 @@
           </grid>
         </constraints>
         <properties>
-          <autoCreateRowSorter value="false"/>
+          <autoCreateRowSorter value="true"/>
           <background color="-1"/>
           <foreground color="-16777216"/>
         </properties>
