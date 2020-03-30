@@ -31,6 +31,15 @@ public class StaffMembers extends TablePage {
 
         populateTable();
 
+        if (adminView) {
+            managerPanel.remove(viewStaffMemberButtonManager);
+            mainPanel.remove(managerPanel);
+        } else {
+            adminPanel.remove(newUserButton);
+            adminPanel.remove(viewStaffMemberButtonAdmin);
+            mainPanel.remove(adminPanel);
+        }
+
         newUserButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
