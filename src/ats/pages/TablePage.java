@@ -29,6 +29,7 @@ public abstract class TablePage extends Page {
                 }
                 data.add(vector);
             }
+
             return new DefaultTableModel(data, columnNames) {
                 @Override
                 public boolean isCellEditable(int row, int column) {
