@@ -96,6 +96,10 @@ public class App {
         changeWindow(new Blank(this, blankID, managerView));
     }
 
+    public void toBlankGenerator() {
+        changeWindow(new BlankGenerator(this));
+    }
+
     // returns user to login page and clears access credentials
     public void logout() {
         staffID = 0;

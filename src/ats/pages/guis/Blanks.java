@@ -52,12 +52,7 @@ public class Blanks extends TablePage {
         //================================================================================
         //region Button Listeners
         //================================================================================
-        generateBlanksButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //TODO
-            }
-        });
+        generateBlanksButton.addActionListener(e -> app.toBlankGenerator());
 
         viewBlankButtonStaff.addActionListener(e -> {
             if (selectedBlank != null) {

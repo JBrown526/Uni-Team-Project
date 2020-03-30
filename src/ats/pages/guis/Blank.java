@@ -76,12 +76,7 @@ public class Blank extends TablePage {
         staffIDField.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent ke) {
-                if ((ke.getKeyChar() >= '0' && ke.getKeyChar() <= '9') || ke.getExtendedKeyCode() == KeyEvent.VK_BACK_SPACE) {
-                    staffIDField.setEditable(true);
-                } else {
-                    staffIDField.setEditable(false);
-                    JOptionPane.showMessageDialog(null, "Staff ID must be numeric only");
-                }
+                restrictInputToNums(ke, staffIDField);
             }
         });
         //endregion
