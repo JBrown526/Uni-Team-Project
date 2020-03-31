@@ -41,6 +41,7 @@ public class StaffMember extends TablePage implements Utilities, StaffChanges {
 
         // TODO: Manager tools
         // TODO: Delete staff
+        //  NOTE: Coupons need unassigning
 
         // hides admin tools when in manager view
         if (!adminView) {

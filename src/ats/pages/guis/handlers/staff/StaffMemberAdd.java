@@ -112,7 +112,6 @@ public class StaffMemberAdd extends Page implements Utilities, StaffChanges {
         sqlFields += Utilities.isEmpty(newPostCode) ? "" : " postcode,";
         sqlUpdate += Utilities.isEmpty(newPostCode) ? "" : " '" + newPostCode + "',";
 
-        // trims the last ',' from the update portion of the string and makes the full query
         sqlFields = Utilities.removeLastCharacter(sqlFields);
         sqlUpdate = Utilities.removeLastCharacter(sqlUpdate);
         String sql;
