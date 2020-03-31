@@ -35,6 +35,8 @@ public class StaffMemberAdd extends Page implements Utilities, StaffChanges {
         applyButton.addActionListener(e -> {
             if (requirementsMet()) {
                 updateStaffMember();
+            } else {
+                JOptionPane.showMessageDialog(null, "A new User must have a valid Staff ID, Role, name and password");
             }
         });
 
@@ -60,25 +62,16 @@ public class StaffMemberAdd extends Page implements Utilities, StaffChanges {
             if (!Utilities.staffExists(Integer.parseInt(staffIDField.getText()), credentials)) {
                 if (!Utilities.isEmpty(roleField.getText()) || StaffChanges.validRole(roleField.getText(), credentials)) {
                     if (!Utilities.isEmpty(nameField.getText())) {
-                        if (!Utilities.isEmpty(String.valueOf(passwordField.getPassword()))) {
-                            return true;
-                        } else {
-                            JOptionPane.showMessageDialog(null, "Please enter a password");
-                            return false;
-                        }
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Please enter a name");
-                        return false;
+                        return !Utilities.isEmpty(String.valueOf(passwordField.getPassword()));
                     }
-                } else {
-                    JOptionPane.showMessageDialog(null, "Invalid role chosen, please select a valid role");
                     return false;
                 }
-            } else {
-                JOptionPane.showMessageDialog(null, "This Staff ID is already in use, select another ID");
+                JOptionPane.showMessageDialog(null, "Invalid role chosen, please select a valid role");
+                return false;
             }
+            JOptionPane.showMessageDialog(null, "This Staff ID is already in use, select another ID");
+            return false;
         }
-        JOptionPane.showMessageDialog(null, "Please enter an ID");
         return false;
     }
 
@@ -98,7 +91,7 @@ public class StaffMemberAdd extends Page implements Utilities, StaffChanges {
                 emailField, addressField, cityField, postcodeField};
 
         String sqlFields = "staff_id, role_code, name, password,";
-        String sqlUpdate = "'" + newStaffID + "', '" + newRole  + "', '" + newName + "', '" + newPassword + "',";
+        String sqlUpdate = "'" + newStaffID + "', '" + newRole + "', '" + newName + "', '" + newPassword + "',";
 
         // adds relevant information the the sql string if the field has been filled in
         sqlFields += Utilities.isEmpty(newPhoneNumber) ? "" : " phone_number,";
