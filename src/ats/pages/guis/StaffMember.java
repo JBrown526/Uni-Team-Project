@@ -130,6 +130,10 @@ public class StaffMember extends TablePage {
         String newAddress = addressField.getText();
         String newCity = cityField.getText();
         String newPostCode = postcodeField.getText();
+        JTextField[] fields = {roleField, nameField, passwordField, phoneNumberField,
+                emailField, addressField, cityField, postcodeField};
+        String[] newFields = {newRole, newName, newPassword, newPhoneNumber,
+                newEmail, newAddress, newCity, newPostCode};
 
         String sqlUpdate = "";
 
@@ -149,26 +153,16 @@ public class StaffMember extends TablePage {
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
                 int insertPosition = 1;
 
-                insertPosition = setStatementValue(ps, newRole, insertPosition);
-                insertPosition = setStatementValue(ps, newName, insertPosition);
-                insertPosition = setStatementValue(ps, newPassword, insertPosition);
-                insertPosition = setStatementValue(ps, newPhoneNumber, insertPosition);
-                insertPosition = setStatementValue(ps, newEmail, insertPosition);
-                insertPosition = setStatementValue(ps, newAddress, insertPosition);
-                insertPosition = setStatementValue(ps, newCity, insertPosition);
-                insertPosition = setStatementValue(ps, newPostCode, insertPosition);
+                for (String newField : newFields) {
+                    insertPosition = setStatementValue(ps, newField, insertPosition);
+                }
 
                 ps.setInt(insertPosition, staffID);
                 ps.executeUpdate();
 
-                roleField.setText("");
-                nameField.setText("");
-                passwordField.setText("");
-                phoneNumberField.setText("");
-                emailField.setText("");
-                addressField.setText("");
-                cityField.setText("");
-                postcodeField.setText("");
+                for (JTextField field : fields) {
+                    field.setText("");
+                }
 
                 populateTable();
             }
