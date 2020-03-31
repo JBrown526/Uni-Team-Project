@@ -6,4 +6,6 @@ public class CommissionRateAdd {
     private JPanel mainPanel;
     private JButton backButton;
     private JButton logoutButton;
+
+    //TODO: Create This
 }

@@ -31,7 +31,7 @@ public class CommissionRates extends TablePage {
         newRateButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                // TODO: Link this
             }
         });
         viewRateButton.addActionListener(e -> {
