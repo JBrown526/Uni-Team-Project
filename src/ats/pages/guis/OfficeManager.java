@@ -17,7 +17,6 @@ public class OfficeManager extends Page {
     private JButton saleViewButton;
     private JButton viewStaffButton;
     private JButton exchangeRatesButton;
-    private JButton commissionRatesButton;
     private JButton viewBlanksButton;
     private JButton generateReportsButton;
     //endregion
@@ -37,12 +36,6 @@ public class OfficeManager extends Page {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //TODO: Generate reports page
-            }
-        });
-        commissionRatesButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //TODO: Remove this
             }
         });
         exchangeRatesButton.addActionListener(new ActionListener() {
