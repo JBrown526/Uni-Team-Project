@@ -1,7 +1,6 @@
 package ats.common;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Optional;
 
 public interface Utilities {
@@ -23,5 +22,23 @@ public interface Utilities {
             i++;
         }
         return i;
+    }
+
+    static boolean staffExists(int id, String[] credentials) {
+        boolean staffExists = false;
+
+        try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
+            try (PreparedStatement ps = conn.prepareStatement("SELECT staff_id FROM staff WHERE staff_id = ?;")) {
+                ps.setInt(1, id);
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        staffExists = true;
+                    }
+                }
+            }
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+        }
+        return staffExists;
     }
 }

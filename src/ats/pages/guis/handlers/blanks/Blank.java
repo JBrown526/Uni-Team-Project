@@ -1,6 +1,7 @@
 package ats.pages.guis.handlers.blanks;
 
 import ats.App;
+import ats.common.Utilities;
 import ats.pages.TablePage;
 
 import javax.swing.*;
@@ -8,7 +9,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.sql.*;
 
-public class Blank extends TablePage {
+public class Blank extends TablePage implements Utilities {
     //================================================================================
     //region Properties
     //================================================================================
@@ -47,7 +48,7 @@ public class Blank extends TablePage {
             int staffID = Integer.parseInt(staffIDField.getText());
 
             // TODO: Assignment date
-            if (staffExists(staffID)) {
+            if (Utilities.staffExists(staffID, credentials)) {
                 reassignBlank(staffID);
             } else {
                 staffIDField.setText("");
@@ -98,25 +99,6 @@ public class Blank extends TablePage {
         } catch (SQLException sqle) {
             sqle.printStackTrace();
         }
-    }
-
-    // checks to see if selected staff member is in the system
-    private boolean staffExists(int id) {
-        boolean staffExists = false;
-
-        try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
-            try (PreparedStatement ps = conn.prepareStatement("SELECT staff_id FROM staff WHERE staff_id = ?;")) {
-                ps.setInt(1, id);
-                try (ResultSet rs = ps.executeQuery()) {
-                    while (rs.next()) {
-                        staffExists = true;
-                    }
-                }
-            }
-        } catch (SQLException sqle) {
-            sqle.printStackTrace();
-        }
-        return staffExists;
     }
 
     private void reassignBlank(int staffID) {
