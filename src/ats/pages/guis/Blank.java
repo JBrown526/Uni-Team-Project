@@ -44,11 +44,11 @@ public class Blank extends TablePage {
         //region Button Listeners
         //================================================================================
         reassignButton.addActionListener(e -> {
-            int id = Integer.parseInt(staffIDField.getText());
+            int staffID = Integer.parseInt(staffIDField.getText());
 
             // TODO: Assignment date
-            if (staffExists(id)) {
-                reassignStaff(id);
+            if (staffExists(staffID)) {
+                reassignBlank(staffID);
             } else {
                 staffIDField.setText("");
                 JOptionPane.showMessageDialog(null, "This Staff Member is not in the System");
@@ -119,10 +119,10 @@ public class Blank extends TablePage {
         return staffExists;
     }
 
-    private void reassignStaff(int id) {
+    private void reassignBlank(int staffID) {
         try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
             try (PreparedStatement ps = conn.prepareStatement("UPDATE ats.blank SET `staff_id` = ? WHERE blank_id = ?;")) {
-                ps.setInt(1, id);
+                ps.setInt(1, staffID);
                 ps.setString(2, blankID);
                 ps.executeUpdate();
                 staffIDField.setText("");
