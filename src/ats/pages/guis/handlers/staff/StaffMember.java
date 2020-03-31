@@ -1,13 +1,13 @@
-package ats.pages.guis;
+package ats.pages.guis.handlers.staff;
 
 import ats.App;
+import ats.common.Utilities;
 import ats.pages.TablePage;
 
 import javax.swing.*;
 import java.sql.*;
-import java.util.Optional;
 
-public class StaffMember extends TablePage {
+public class StaffMember extends TablePage implements Utilities, StaffChanges {
     //================================================================================
     //region Properties
     //================================================================================
@@ -59,13 +59,13 @@ public class StaffMember extends TablePage {
         //================================================================================
         applyButton.addActionListener(e -> {
             // makes sure that if a role is being changed it is to a valid one
-            if (isEmpty(roleField.getText()) || validRole(roleField.getText())) {
+            if (Utilities.isEmpty(roleField.getText()) || StaffChanges.validRole(roleField.getText(), credentials)) {
                 // ensures at least one field has been filled
-                if (!isEmpty(roleField.getText()) || !isEmpty(nameField.getText())
-                        || !isEmpty(String.valueOf(passwordField.getPassword()))
-                        || !isEmpty(phoneNumberField.getText()) || !isEmpty((emailField.getText()))
-                        || !isEmpty(addressField.getText()) || !isEmpty(cityField.getText())
-                        || !isEmpty(postcodeField.getText())) {
+                if (!Utilities.isEmpty(roleField.getText()) || !Utilities.isEmpty(nameField.getText())
+                        || !Utilities.isEmpty(String.valueOf(passwordField.getPassword()))
+                        || !Utilities.isEmpty(phoneNumberField.getText()) || !Utilities.isEmpty((emailField.getText()))
+                        || !Utilities.isEmpty(addressField.getText()) || !Utilities.isEmpty(cityField.getText())
+                        || !Utilities.isEmpty(postcodeField.getText())) {
                     updateStaffMember();
                 } else {
                     JOptionPane.showMessageDialog(null, "Please fill in new details");
@@ -107,44 +107,8 @@ public class StaffMember extends TablePage {
         }
     }
 
-    private static boolean isEmpty(String fieldValue) {
-        return fieldValue.equals("");
-    }
-
-    private boolean validRole(String role) {
-        boolean validRole = false;
-
-        try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
-            try (PreparedStatement ps = conn.prepareStatement("SELECT role_code FROM role WHERE role_code = ?;")) {
-                ps.setString(1, role);
-                try (ResultSet rs = ps.executeQuery()) {
-                    while (rs.next()) {
-                        validRole = true;
-                    }
-                }
-            }
-        } catch (SQLException sqle) {
-            sqle.printStackTrace();
-        }
-        return validRole;
-    }
-
-    private static String removeLastCharacter(String str) {
-        return Optional.ofNullable(str)
-                .filter(sStr -> sStr.length() != 0)
-                .map(sStr -> sStr.substring(0, sStr.length() - 1))
-                .orElse(str);
-    }
-
-    private static int setStatementValue(PreparedStatement ps, String str, int i) throws SQLException {
-        if (!isEmpty(str)) {
-            ps.setString(i, str);
-            i++;
-        }
-        return i;
-    }
-
-    private void updateStaffMember() {
+    @Override
+    public void updateStaffMember() {
         String newRole = roleField.getText().toUpperCase();
         String newName = nameField.getText();
         String newPassword = String.valueOf(passwordField.getPassword());
@@ -162,17 +126,17 @@ public class StaffMember extends TablePage {
         String sqlUpdate = "";
 
         // adds relevant information the the sql string if the field has been filled in
-        sqlUpdate += isEmpty(newRole) ? "" : " role_code = ?,";
-        sqlUpdate += isEmpty(newName) ? "" : " name = ?,";
-        sqlUpdate += isEmpty(newPassword) ? "" : " password = ?,";
-        sqlUpdate += isEmpty(newPhoneNumber) ? "" : " phone_number = ?,";
-        sqlUpdate += isEmpty(newEmail) ? "" : " email = ?,";
-        sqlUpdate += isEmpty(newAddress) ? "" : " address = ?,";
-        sqlUpdate += isEmpty(newCity) ? "" : " city = ?,";
-        sqlUpdate += isEmpty(newPostCode) ? "" : " postcode = ?,";
+        sqlUpdate += Utilities.isEmpty(newRole) ? "" : " role_code = ?,";
+        sqlUpdate += Utilities.isEmpty(newName) ? "" : " name = ?,";
+        sqlUpdate += Utilities.isEmpty(newPassword) ? "" : " password = ?,";
+        sqlUpdate += Utilities.isEmpty(newPhoneNumber) ? "" : " phone_number = ?,";
+        sqlUpdate += Utilities.isEmpty(newEmail) ? "" : " email = ?,";
+        sqlUpdate += Utilities.isEmpty(newAddress) ? "" : " address = ?,";
+        sqlUpdate += Utilities.isEmpty(newCity) ? "" : " city = ?,";
+        sqlUpdate += Utilities.isEmpty(newPostCode) ? "" : " postcode = ?,";
 
         // trims the last ',' from the update portion of the string and makes the full query
-        sqlUpdate = removeLastCharacter(sqlUpdate);
+        sqlUpdate = Utilities.removeLastCharacter(sqlUpdate);
         String sql = String.format("UPDATE ats.staff SET%s WHERE staff_id = ?;", sqlUpdate);
 
         try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
@@ -181,7 +145,7 @@ public class StaffMember extends TablePage {
 
                 // adds the new information to the statement and increments the insert position index if the field is not empty
                 for (String newField : newFields) {
-                    insertPosition = setStatementValue(ps, newField, insertPosition);
+                    insertPosition = Utilities.setStatementValue(ps, newField, insertPosition);
                 }
 
                 ps.setInt(insertPosition, staffID);

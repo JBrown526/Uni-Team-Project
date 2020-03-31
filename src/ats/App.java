@@ -2,6 +2,12 @@ package ats;
 
 import ats.pages.*;
 import ats.pages.guis.*;
+import ats.pages.guis.handlers.blanks.Blank;
+import ats.pages.guis.handlers.blanks.BlankGenerator;
+import ats.pages.guis.handlers.blanks.Blanks;
+import ats.pages.guis.handlers.staff.StaffMember;
+import ats.pages.guis.handlers.staff.StaffMemberAdd;
+import ats.pages.guis.handlers.staff.StaffMembers;
 
 import javax.swing.*;
 
@@ -60,7 +66,7 @@ public class App {
     //endregion
 
     //================================================================================
-    //region Navigation
+    //region Navigation Methods
     //================================================================================
     // logs user into appropriate landing page
     public void login(int id, String role) {
@@ -121,7 +127,7 @@ public class App {
     //endregion
 
     //================================================================================
-    //region Other Methods
+    //region Methods
     //================================================================================
     private void changeWindow(Page page) {
         Dimension d = window.getSize();

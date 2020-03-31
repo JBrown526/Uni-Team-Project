@@ -1,4 +1,4 @@
-package ats.pages.guis;
+package ats.pages.guis.handlers.blanks;
 
 import ats.App;
 import ats.pages.Page;

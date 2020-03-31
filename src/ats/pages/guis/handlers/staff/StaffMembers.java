@@ -1,4 +1,4 @@
-package ats.pages.guis;
+package ats.pages.guis.handlers.staff;
 
 import ats.App;
 import ats.pages.TablePage;
@@ -8,72 +8,67 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.*;
 
-public class Blanks extends TablePage {
-
+public class StaffMembers extends TablePage {
     //================================================================================
     //region Properties
     //================================================================================
     private App app;
-    private boolean managerView;
-    private String selectedBlank;
+    private int selectedStaffMember = -1;
 
+    private JPanel mainPanel;
     private JButton backButton;
     private JButton logoutButton;
-    private JPanel mainPanel;
-    private JTable blankTable;
-    private JButton generateBlanksButton;
+    private JTable staffTable;
+    private JPanel adminPanel;
+    private JButton newUserButton;
+    private JButton viewStaffMemberButtonAdmin;
     private JPanel managerPanel;
-    private JButton viewBlankButtonManager;
-    private JPanel staffPanel;
-    private JButton viewBlankButtonStaff;
+    private JButton viewStaffMemberButtonManager;
     //endregion
 
-    //================================================================================
     //region Constructor
-    //================================================================================
-    public Blanks(App app, boolean managerView) {
+    public StaffMembers(App app, boolean adminView) {
         this.app = app;
-        this.managerView = managerView;
 
         populateTable();
 
-        // hides manager tools in sales mode and sales tools in manager mode
-        if (managerView) {
-            staffPanel.remove(viewBlankButtonStaff);
-            mainPanel.remove(staffPanel);
-        } else {
-            managerPanel.remove(generateBlanksButton);
-            mainPanel.remove(viewBlankButtonManager);
+        // hides admin tools from managers and vice versa
+        if (adminView) {
+            managerPanel.remove(viewStaffMemberButtonManager);
             mainPanel.remove(managerPanel);
+        } else {
+            adminPanel.remove(newUserButton);
+            adminPanel.remove(viewStaffMemberButtonAdmin);
+            mainPanel.remove(adminPanel);
         }
 
         //================================================================================
         //region Button Listeners
         //================================================================================
-        generateBlanksButton.addActionListener(e -> app.toBlankGenerator());
+        newUserButton.addActionListener(e -> app.toStaffMemberAdd());
 
-        viewBlankButtonStaff.addActionListener(e -> {
-            if (selectedBlank != null) {
-                app.toBlank(selectedBlank, false);
+        viewStaffMemberButtonAdmin.addActionListener(e -> {
+            if (selectedStaffMember != -1) {
+                app.toStaffMember(selectedStaffMember, true);
             } else {
-                JOptionPane.showMessageDialog(null, "Please select a blank");
+                JOptionPane.showMessageDialog(null, "Please select a staff member");
             }
         });
 
-        viewBlankButtonManager.addActionListener(e -> {
-            if (selectedBlank != null) {
-                app.toBlank(selectedBlank, true);
+        viewStaffMemberButtonManager.addActionListener(e -> {
+            if (selectedStaffMember != -1) {
+                app.toStaffMember(selectedStaffMember, false);
             } else {
-                JOptionPane.showMessageDialog(null, "Please select a blank");
+                JOptionPane.showMessageDialog(null, "Please select a staff member");
             }
         });
 
         logoutButton.addActionListener(e -> app.logout());
         backButton.addActionListener(e -> {
-            if (managerView) {
-                app.toOfficeManager();
+            if (adminView) {
+                app.toSystemAdministrator();
             } else {
-                app.toTravelAgent();
+                app.toOfficeManager();
             }
         });
         //endregion
@@ -81,11 +76,11 @@ public class Blanks extends TablePage {
         //================================================================================
         //region Other Listeners
         //================================================================================
-        blankTable.addMouseListener(new MouseAdapter() {
+        staffTable.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                int row = blankTable.getSelectedRow();
-                selectedBlank = String.valueOf(blankTable.getValueAt(row, 1));
+                int row = staffTable.getSelectedRow();
+                selectedStaffMember = Integer.parseInt(String.valueOf(staffTable.getValueAt(row, 0)));
             }
         });
         //endregion
@@ -104,25 +99,14 @@ public class Blanks extends TablePage {
     //================================================================================
     //region Methods
     //================================================================================
-    // populates the table with a specified selection of blanks
     @Override
     protected void populateTable() {
         String[] credentials = app.getDBCredentials();
-        String sql;
-        // shows all blanks if in manager mode or staff members assigned blanks if in sales mode
-        if (managerView) {
-            sql = "SELECT * FROM blank";
-        } else {
-            sql = "SELECT * FROM blank WHERE staff_id = ?";
-        }
 
         try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
-            try (PreparedStatement ps = conn.prepareStatement(sql)) {
-                if (!managerView) {
-                    ps.setInt(1, app.getStaffID());
-                }
+            try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM staff")) {
                 try (ResultSet rs = ps.executeQuery()) {
-                    blankTable.setModel(buildTableModel(rs));
+                    staffTable.setModel(buildTableModel(rs));
                 }
             }
         } catch (SQLException sqle) {

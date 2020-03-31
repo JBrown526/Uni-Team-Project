@@ -1,6 +1,7 @@
-package ats.pages.guis;
+package ats.pages.guis.handlers.staff;
 
 import ats.App;
+import ats.common.Utilities;
 import ats.pages.Page;
 
 import javax.swing.*;
@@ -9,7 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-public class StaffMemberAdd extends Page {
+public class StaffMemberAdd extends Page implements Utilities, StaffChanges {
 
     private JPanel mainPanel;
     private JButton applyButton;
@@ -47,5 +48,10 @@ public class StaffMemberAdd extends Page {
     @Override
     public JPanel getMainPanel() {
         return mainPanel;
+    }
+
+    @Override
+    public void updateStaffMember() {
+
     }
 }
