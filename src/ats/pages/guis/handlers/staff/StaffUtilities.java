@@ -2,7 +2,7 @@ package ats.pages.guis.handlers.staff;
 
 import java.sql.*;
 
-public interface StaffChanges {
+public interface StaffUtilities {
 
     boolean requirementsMet();
 

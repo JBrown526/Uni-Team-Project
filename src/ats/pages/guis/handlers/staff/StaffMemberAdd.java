@@ -12,7 +12,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class StaffMemberAdd extends Page implements Utilities, StaffChanges {
+public class StaffMemberAdd extends Page implements Utilities, StaffUtilities {
     String[] credentials;
 
     private JPanel mainPanel;
@@ -60,7 +60,7 @@ public class StaffMemberAdd extends Page implements Utilities, StaffChanges {
     public boolean requirementsMet() {
         if (!Utilities.isEmpty(staffIDField.getText())) {
             if (!Utilities.staffExists(Integer.parseInt(staffIDField.getText()), credentials)) {
-                if (!Utilities.isEmpty(roleField.getText()) || StaffChanges.validRole(roleField.getText(), credentials)) {
+                if (!Utilities.isEmpty(roleField.getText()) || StaffUtilities.validRole(roleField.getText(), credentials)) {
                     if (!Utilities.isEmpty(nameField.getText())) {
                         return !Utilities.isEmpty(String.valueOf(passwordField.getPassword()));
                     }

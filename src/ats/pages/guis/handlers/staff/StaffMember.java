@@ -7,7 +7,7 @@ import ats.pages.TablePage;
 import javax.swing.*;
 import java.sql.*;
 
-public class StaffMember extends TablePage implements Utilities, StaffChanges {
+public class StaffMember extends TablePage implements Utilities, StaffUtilities {
     //================================================================================
     //region Properties
     //================================================================================
@@ -28,6 +28,8 @@ public class StaffMember extends TablePage implements Utilities, StaffChanges {
     private JTextField cityField;
     private JTextField postcodeField;
     private JPanel mainPanel;
+    private JPanel managerPanel;
+    private JButton commissionRatesButton;
     //endregion
 
     //================================================================================
@@ -39,12 +41,14 @@ public class StaffMember extends TablePage implements Utilities, StaffChanges {
 
         populateTable();
 
-        // TODO: Manager tools
         // TODO: Delete staff
         //  NOTE: Coupons need unassigning
 
-        // hides admin tools when in manager view
-        if (!adminView) {
+        // hides admin tools when in manager view and vice versa
+        if (adminView) {
+            managerPanel.remove(commissionRatesButton);
+            mainPanel.remove(managerPanel);
+        } else {
             adminPanel.remove(roleField);
             adminPanel.remove(nameField);
             adminPanel.remove(passwordField);
@@ -59,6 +63,7 @@ public class StaffMember extends TablePage implements Utilities, StaffChanges {
         //================================================================================
         //region Button Listeners
         //================================================================================
+        commissionRatesButton.addActionListener(e -> app.toCommissionRates(staffID));
         applyButton.addActionListener(e -> {
             if (requirementsMet()) {
                 updateStaffMember();
@@ -99,7 +104,7 @@ public class StaffMember extends TablePage implements Utilities, StaffChanges {
 
     @Override
     public boolean requirementsMet() {
-        if (Utilities.isEmpty(roleField.getText()) || StaffChanges.validRole(roleField.getText(), credentials)) {
+        if (Utilities.isEmpty(roleField.getText()) || StaffUtilities.validRole(roleField.getText(), credentials)) {
             // ensures at least one field has been filled
             if (!Utilities.isEmpty(roleField.getText()) || !Utilities.isEmpty(nameField.getText())
                     || !Utilities.isEmpty(String.valueOf(passwordField.getPassword()))
