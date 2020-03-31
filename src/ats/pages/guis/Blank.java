@@ -48,18 +48,7 @@ public class Blank extends TablePage {
 
             // TODO: Assignment date
             if (staffExists(id)) {
-                // updates the blank to be assigned to the given staff member
-                try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
-                    try (PreparedStatement ps = conn.prepareStatement("UPDATE ats.blank SET `staff_id` = ? WHERE blank_id = ?;")) {
-                        ps.setInt(1, id);
-                        ps.setString(2, blankID);
-                        ps.executeUpdate();
-                        staffIDField.setText("");
-                        populateTable();
-                    }
-                } catch (SQLException sqle) {
-                    sqle.printStackTrace();
-                }
+                reassignStaff(id);
             } else {
                 staffIDField.setText("");
                 JOptionPane.showMessageDialog(null, "This Staff Member is not in the System");
@@ -128,6 +117,20 @@ public class Blank extends TablePage {
             sqle.printStackTrace();
         }
         return staffExists;
+    }
+
+    private void reassignStaff(int id) {
+        try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
+            try (PreparedStatement ps = conn.prepareStatement("UPDATE ats.blank SET `staff_id` = ? WHERE blank_id = ?;")) {
+                ps.setInt(1, id);
+                ps.setString(2, blankID);
+                ps.executeUpdate();
+                staffIDField.setText("");
+                populateTable();
+            }
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+        }
     }
     //endregion
 }
