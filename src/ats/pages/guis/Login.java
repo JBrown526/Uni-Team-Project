@@ -65,7 +65,7 @@ public class Login extends Page {
         staffIDField.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent ke) {
-                restrictInputToNums(ke, staffIDField);
+                restrictInputToPositiveInt(ke, staffIDField, "Staff ID");
             }
         });
         //endregion

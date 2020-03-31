@@ -59,7 +59,7 @@
         </constraints>
         <properties>
           <autoCreateRowSorter value="true"/>
-          <background color="-1"/>
+          <background color="-986896"/>
           <foreground color="-16777216"/>
         </properties>
       </component>

@@ -63,7 +63,7 @@ public class BlankGenerator extends Page {
         numberOfField.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent ke) {
-                restrictInputToNums(ke, numberOfField);
+                restrictInputToPositiveInt(ke, numberOfField, "Staff ID");
             }
         });
         //endregion

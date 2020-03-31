@@ -13,7 +13,7 @@ import java.sql.*;
 public class CommissionRates extends TablePage {
     private String[] credentials;
     private int staffID;
-    private int selectedCommissionRate;
+    private int selectedCommissionRate = -1;
 
     private JPanel mainPanel;
     private JButton backButton;
@@ -34,10 +34,11 @@ public class CommissionRates extends TablePage {
 
             }
         });
-        viewRateButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
+        viewRateButton.addActionListener(e -> {
+            if (selectedCommissionRate != -1) {
+                app.toCommissionRate(staffID, selectedCommissionRate);
+            } else {
+                JOptionPane.showMessageDialog(null, "Please select a commission rate");
             }
         });
 

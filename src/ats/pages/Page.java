@@ -8,12 +8,22 @@ public abstract class Page {
 
     public abstract JPanel getMainPanel();
 
-    public static void restrictInputToNums(KeyEvent ke, JTextField field) {
+    public static void restrictInputToPositiveInt(KeyEvent ke, JTextField field, String fieldName) {
         if ((ke.getKeyChar() >= '0' && ke.getKeyChar() <= '9') || ke.getExtendedKeyCode() == KeyEvent.VK_BACK_SPACE) {
             field.setEditable(true);
         } else {
             field.setEditable(false);
-            JOptionPane.showMessageDialog(null, "Staff ID must be numeric only");
+            JOptionPane.showMessageDialog(null, fieldName + " must be a positive integer value");
+        }
+    }
+
+    public static void restrictInputToPositiveFloat(KeyEvent ke, JTextField field, String fieldName) {
+        if ((ke.getKeyChar() >= '0' && ke.getKeyChar() <= '9') || ke.getExtendedKeyCode() == KeyEvent.VK_BACK_SPACE
+                || ke.getExtendedKeyCode() == KeyEvent.VK_PERIOD) {
+            field.setEditable(true);
+        } else {
+            field.setEditable(false);
+            JOptionPane.showMessageDialog(null, fieldName + " must be a positive float value");
         }
     }
 
