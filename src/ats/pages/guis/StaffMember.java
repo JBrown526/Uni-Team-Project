@@ -8,6 +8,9 @@ import java.sql.*;
 import java.util.Optional;
 
 public class StaffMember extends TablePage {
+    //================================================================================
+    //region Properties
+    //================================================================================
     int staffID;
     String[] credentials;
 
@@ -25,13 +28,20 @@ public class StaffMember extends TablePage {
     private JTextField cityField;
     private JTextField postcodeField;
     private JPanel mainPanel;
+    //endregion
 
+    //================================================================================
+    //region Constructor
+    //================================================================================
     public StaffMember(App app, int staffID, boolean adminView) {
         this.staffID = staffID;
         credentials = app.getDBCredentials();
 
         populateTable();
 
+        // TODO: Manager tools
+
+        // hides admin tools when in manager view
         if (!adminView) {
             adminPanel.remove(roleField);
             adminPanel.remove(nameField);
@@ -44,7 +54,11 @@ public class StaffMember extends TablePage {
             mainPanel.remove(adminPanel);
         }
 
+        //================================================================================
+        //region Button Listeners
+        //================================================================================
         applyButton.addActionListener(e -> {
+            // makes sure that if a role is being changed it is to a valid one
             if (isEmpty(roleField.getText()) || validRole(roleField.getText())) {
                 // ensures at least one field has been filled
                 if (!isEmpty(roleField.getText()) || !isEmpty(nameField.getText())
@@ -63,13 +77,22 @@ public class StaffMember extends TablePage {
 
         backButton.addActionListener(e -> app.toStaffMembers(adminView));
         logoutButton.addActionListener(e -> app.logout());
+        //endregion
     }
+    //endregion
 
+    //================================================================================
+    //region Accessors
+    //================================================================================
     @Override
     public JPanel getMainPanel() {
         return mainPanel;
     }
+    //endregion
 
+    //================================================================================
+    //region Methods
+    //================================================================================
     @Override
     protected void populateTable() {
         try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
@@ -122,7 +145,7 @@ public class StaffMember extends TablePage {
     }
 
     private void updateStaffMember() {
-        String newRole = roleField.getText();
+        String newRole = roleField.getText().toUpperCase();
         String newName = nameField.getText();
         String newPassword = String.valueOf(passwordField.getPassword());
         String newPhoneNumber = phoneNumberField.getText();
@@ -130,6 +153,7 @@ public class StaffMember extends TablePage {
         String newAddress = addressField.getText();
         String newCity = cityField.getText();
         String newPostCode = postcodeField.getText();
+
         JTextField[] fields = {roleField, nameField, passwordField, phoneNumberField,
                 emailField, addressField, cityField, postcodeField};
         String[] newFields = {newRole, newName, newPassword, newPhoneNumber,
@@ -137,6 +161,7 @@ public class StaffMember extends TablePage {
 
         String sqlUpdate = "";
 
+        // adds relevant information the the sql string if the field has been filled in
         sqlUpdate += isEmpty(newRole) ? "" : " role_code = ?,";
         sqlUpdate += isEmpty(newName) ? "" : " name = ?,";
         sqlUpdate += isEmpty(newPassword) ? "" : " password = ?,";
@@ -145,14 +170,16 @@ public class StaffMember extends TablePage {
         sqlUpdate += isEmpty(newAddress) ? "" : " address = ?,";
         sqlUpdate += isEmpty(newCity) ? "" : " city = ?,";
         sqlUpdate += isEmpty(newPostCode) ? "" : " postcode = ?,";
-        sqlUpdate = removeLastCharacter(sqlUpdate);
 
+        // trims the last ',' from the update portion of the string and makes the full query
+        sqlUpdate = removeLastCharacter(sqlUpdate);
         String sql = String.format("UPDATE ats.staff SET%s WHERE staff_id = ?;", sqlUpdate);
 
         try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
                 int insertPosition = 1;
 
+                // adds the new information to the statement and increments the insert position index if the field is not empty
                 for (String newField : newFields) {
                     insertPosition = setStatementValue(ps, newField, insertPosition);
                 }
@@ -170,4 +197,5 @@ public class StaffMember extends TablePage {
             sqle.printStackTrace();
         }
     }
+    //endregion
 }

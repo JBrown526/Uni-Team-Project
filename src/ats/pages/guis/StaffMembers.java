@@ -11,6 +11,9 @@ import java.awt.event.MouseEvent;
 import java.sql.*;
 
 public class StaffMembers extends TablePage {
+    //================================================================================
+    //region Properties
+    //================================================================================
     private App app;
     private int selectedStaffMember = -1;
 
@@ -23,12 +26,15 @@ public class StaffMembers extends TablePage {
     private JButton viewStaffMemberButtonAdmin;
     private JPanel managerPanel;
     private JButton viewStaffMemberButtonManager;
+    //endregion
 
+    //region Constructor
     public StaffMembers(App app, boolean adminView) {
         this.app = app;
 
         populateTable();
 
+        // hides admin tools from managers and vice versa
         if (adminView) {
             managerPanel.remove(viewStaffMemberButtonManager);
             mainPanel.remove(managerPanel);
@@ -38,12 +44,10 @@ public class StaffMembers extends TablePage {
             mainPanel.remove(adminPanel);
         }
 
-        newUserButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //TODO: Create new user page
-            }
-        });
+        //================================================================================
+        //region Button Listeners
+        //================================================================================
+        newUserButton.addActionListener(e -> app.toStaffMemberAdd());
 
         viewStaffMemberButtonAdmin.addActionListener(e -> {
             if (selectedStaffMember != -1) {
@@ -69,7 +73,11 @@ public class StaffMembers extends TablePage {
                 app.toOfficeManager();
             }
         });
+        //endregion
 
+        //================================================================================
+        //region Other Listeners
+        //================================================================================
         staffTable.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -77,13 +85,22 @@ public class StaffMembers extends TablePage {
                 selectedStaffMember = Integer.parseInt(String.valueOf(staffTable.getValueAt(row, 0)));
             }
         });
+        //endregion
     }
+    //endregion
 
+    //================================================================================
+    //region Accessors
+    //================================================================================
     @Override
     public JPanel getMainPanel() {
         return mainPanel;
     }
+    //endregion
 
+    //================================================================================
+    //region Methods
+    //================================================================================
     @Override
     protected void populateTable() {
         String[] credentials = app.getDBCredentials();
@@ -98,4 +115,5 @@ public class StaffMembers extends TablePage {
             sqle.printStackTrace();
         }
     }
+    //endregion
 }

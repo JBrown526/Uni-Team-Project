@@ -135,7 +135,7 @@
             </constraints>
             <properties>
               <background color="-1"/>
-              <foreground color="-4473925"/>
+              <foreground color="-12500671"/>
             </properties>
           </component>
           <component id="c861e" class="javax.swing.JTextField" binding="nameField">
@@ -146,7 +146,7 @@
             </constraints>
             <properties>
               <background color="-1"/>
-              <foreground color="-4473925"/>
+              <foreground color="-12500671"/>
             </properties>
           </component>
           <component id="eb459" class="javax.swing.JTextField" binding="phoneNumberField">
@@ -157,7 +157,7 @@
             </constraints>
             <properties>
               <background color="-1"/>
-              <foreground color="-4473925"/>
+              <foreground color="-12500671"/>
             </properties>
           </component>
           <component id="4e2c1" class="javax.swing.JTextField" binding="addressField">
@@ -168,7 +168,7 @@
             </constraints>
             <properties>
               <background color="-1"/>
-              <foreground color="-4473925"/>
+              <foreground color="-12500671"/>
             </properties>
           </component>
           <component id="7d524" class="javax.swing.JTextField" binding="postcodeField">
@@ -179,7 +179,7 @@
             </constraints>
             <properties>
               <background color="-1"/>
-              <foreground color="-4473925"/>
+              <foreground color="-12500671"/>
             </properties>
           </component>
           <component id="28dfc" class="javax.swing.JTextField" binding="cityField">
@@ -190,7 +190,7 @@
             </constraints>
             <properties>
               <background color="-1"/>
-              <foreground color="-4473925"/>
+              <foreground color="-12500671"/>
             </properties>
           </component>
           <component id="2b617" class="javax.swing.JTextField" binding="emailField">
@@ -201,7 +201,7 @@
             </constraints>
             <properties>
               <background color="-1"/>
-              <foreground color="-4473925"/>
+              <foreground color="-12500671"/>
             </properties>
           </component>
           <component id="512aa" class="javax.swing.JPasswordField" binding="passwordField">
@@ -212,6 +212,7 @@
             </constraints>
             <properties>
               <background color="-1"/>
+              <foreground color="-12500671"/>
             </properties>
           </component>
           <component id="1e521" class="javax.swing.JLabel">

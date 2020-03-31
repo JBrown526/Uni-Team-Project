@@ -122,6 +122,7 @@
             </constraints>
             <properties>
               <background color="-1"/>
+              <foreground color="-12500671"/>
               <text value=""/>
               <toolTipText value=""/>
             </properties>
@@ -164,6 +165,7 @@
             </constraints>
             <properties>
               <background color="-1"/>
+              <foreground color="-12500671"/>
             </properties>
           </component>
           <component id="8608f" class="javax.swing.JLabel">
