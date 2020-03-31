@@ -5,15 +5,19 @@ import ats.common.Utilities;
 import ats.pages.Page;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 public class StaffMemberAdd extends Page implements Utilities, StaffChanges {
+    String[] credentials;
 
     private JPanel mainPanel;
     private JButton applyButton;
+    private JTextField staffIDField;
     private JTextField roleField;
     private JTextField nameField;
     private JTextField phoneNumberField;
@@ -24,13 +28,13 @@ public class StaffMemberAdd extends Page implements Utilities, StaffChanges {
     private JPasswordField passwordField;
     private JButton backButton;
     private JButton logoutButton;
-    private JTextField staffIDField;
 
     public StaffMemberAdd(App app) {
-        applyButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        credentials = app.getDBCredentials();
 
+        applyButton.addActionListener(e -> {
+            if (requirementsMet()) {
+                updateStaffMember();
             }
         });
 
@@ -39,8 +43,8 @@ public class StaffMemberAdd extends Page implements Utilities, StaffChanges {
 
         staffIDField.addKeyListener(new KeyAdapter() {
             @Override
-            public void keyPressed(KeyEvent e) {
-                super.keyPressed(e);
+            public void keyPressed(KeyEvent ke) {
+                restrictInputToNums(ke, staffIDField);
             }
         });
     }
@@ -51,7 +55,80 @@ public class StaffMemberAdd extends Page implements Utilities, StaffChanges {
     }
 
     @Override
-    public void updateStaffMember() {
+    public boolean requirementsMet() {
+        if (!Utilities.isEmpty(staffIDField.getText())) {
+            if (!Utilities.staffExists(Integer.parseInt(staffIDField.getText()), credentials)) {
+                if (!Utilities.isEmpty(roleField.getText()) || StaffChanges.validRole(roleField.getText(), credentials)) {
+                    if (!Utilities.isEmpty(nameField.getText())) {
+                        if (!Utilities.isEmpty(String.valueOf(passwordField.getPassword()))) {
+                            return true;
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Please enter a password");
+                            return false;
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Please enter a name");
+                        return false;
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Invalid role chosen, please select a valid role");
+                    return false;
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "This Staff ID is already in use, select another ID");
+            }
+        }
+        JOptionPane.showMessageDialog(null, "Please enter an ID");
+        return false;
+    }
 
+    @Override
+    public void updateStaffMember() {
+        String newStaffID = staffIDField.getText();
+        String newRole = roleField.getText().toUpperCase();
+        String newName = nameField.getText();
+        String newPassword = String.valueOf(passwordField.getPassword());
+        String newPhoneNumber = phoneNumberField.getText();
+        String newEmail = emailField.getText();
+        String newAddress = addressField.getText();
+        String newCity = cityField.getText();
+        String newPostCode = postcodeField.getText();
+
+        JTextField[] fields = {staffIDField, roleField, nameField, passwordField, phoneNumberField,
+                emailField, addressField, cityField, postcodeField};
+
+        String sqlFields = "staff_id, role_code, name, password,";
+        String sqlUpdate = "'" + newStaffID + "', '" + newRole  + "', '" + newName + "', '" + newPassword + "',";
+
+        // adds relevant information the the sql string if the field has been filled in
+        sqlFields += Utilities.isEmpty(newPhoneNumber) ? "" : " phone_number,";
+        sqlUpdate += Utilities.isEmpty(newPhoneNumber) ? "" : " '" + newPhoneNumber + "',";
+        sqlFields += Utilities.isEmpty(newEmail) ? "" : " email,";
+        sqlUpdate += Utilities.isEmpty(newEmail) ? "" : " '" + newEmail + "',";
+        sqlFields += Utilities.isEmpty(newAddress) ? "" : " address,";
+        sqlUpdate += Utilities.isEmpty(newAddress) ? "" : " '" + newAddress + "',";
+        sqlFields += Utilities.isEmpty(newCity) ? "" : " city,";
+        sqlUpdate += Utilities.isEmpty(newCity) ? "" : " '" + newCity + "',";
+        sqlFields += Utilities.isEmpty(newPostCode) ? "" : " postcode,";
+        sqlUpdate += Utilities.isEmpty(newPostCode) ? "" : " '" + newPostCode + "',";
+
+        // trims the last ',' from the update portion of the string and makes the full query
+        sqlFields = Utilities.removeLastCharacter(sqlFields);
+        sqlUpdate = Utilities.removeLastCharacter(sqlUpdate);
+        String sql;
+        sql = String.format("INSERT INTO ats.staff (%s) VALUES (%s);", sqlFields, sqlUpdate);
+
+        try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+
+                ps.executeUpdate();
+
+                for (JTextField field : fields) {
+                    field.setText("");
+                }
+            }
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+        }
     }
 }

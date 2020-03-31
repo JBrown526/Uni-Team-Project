@@ -40,6 +40,7 @@ public class StaffMember extends TablePage implements Utilities, StaffChanges {
         populateTable();
 
         // TODO: Manager tools
+        // TODO: Delete staff
 
         // hides admin tools when in manager view
         if (!adminView) {
@@ -58,20 +59,8 @@ public class StaffMember extends TablePage implements Utilities, StaffChanges {
         //region Button Listeners
         //================================================================================
         applyButton.addActionListener(e -> {
-            // makes sure that if a role is being changed it is to a valid one
-            if (Utilities.isEmpty(roleField.getText()) || StaffChanges.validRole(roleField.getText(), credentials)) {
-                // ensures at least one field has been filled
-                if (!Utilities.isEmpty(roleField.getText()) || !Utilities.isEmpty(nameField.getText())
-                        || !Utilities.isEmpty(String.valueOf(passwordField.getPassword()))
-                        || !Utilities.isEmpty(phoneNumberField.getText()) || !Utilities.isEmpty((emailField.getText()))
-                        || !Utilities.isEmpty(addressField.getText()) || !Utilities.isEmpty(cityField.getText())
-                        || !Utilities.isEmpty(postcodeField.getText())) {
-                    updateStaffMember();
-                } else {
-                    JOptionPane.showMessageDialog(null, "Please fill in new details");
-                }
-            } else {
-                JOptionPane.showMessageDialog(null, "That is an invalid user role");
+            if (requirementsMet()) {
+                updateStaffMember();
             }
         });
 
@@ -105,6 +94,25 @@ public class StaffMember extends TablePage implements Utilities, StaffChanges {
         } catch (SQLException sqle) {
             sqle.printStackTrace();
         }
+    }
+
+    @Override
+    public boolean requirementsMet() {
+        if (Utilities.isEmpty(roleField.getText()) || StaffChanges.validRole(roleField.getText(), credentials)) {
+            // ensures at least one field has been filled
+            if (!Utilities.isEmpty(roleField.getText()) || !Utilities.isEmpty(nameField.getText())
+                    || !Utilities.isEmpty(String.valueOf(passwordField.getPassword()))
+                    || !Utilities.isEmpty(phoneNumberField.getText()) || !Utilities.isEmpty((emailField.getText()))
+                    || !Utilities.isEmpty(addressField.getText()) || !Utilities.isEmpty(cityField.getText())
+                    || !Utilities.isEmpty(postcodeField.getText())) {
+                return true;
+            } else {
+                JOptionPane.showMessageDialog(null, "Please fill in new details");
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "That is an invalid user role");
+        }
+        return false;
     }
 
     @Override

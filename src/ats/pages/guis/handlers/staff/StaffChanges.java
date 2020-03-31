@@ -4,6 +4,8 @@ import java.sql.*;
 
 public interface StaffChanges {
 
+    boolean requirementsMet();
+
     void updateStaffMember();
 
     static boolean validRole(String role, String[] credentials) {
