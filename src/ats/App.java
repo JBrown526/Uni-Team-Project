@@ -10,6 +10,9 @@ import ats.pages.guis.handlers.blanks.Blanks;
 import ats.pages.guis.handlers.staff.StaffMember;
 import ats.pages.guis.handlers.staff.StaffMemberAdd;
 import ats.pages.guis.handlers.staff.StaffMembers;
+import ats.pages.guis.homepages.OfficeManager;
+import ats.pages.guis.homepages.SystemAdministrator;
+import ats.pages.guis.homepages.TravelAgent;
 
 import javax.swing.*;
 
