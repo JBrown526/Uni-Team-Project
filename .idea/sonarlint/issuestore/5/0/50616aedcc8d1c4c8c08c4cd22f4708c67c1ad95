@@ -1,10 +1,8 @@
 
 M
-java:S1068"0Remove this unused "logoutButton" private field.(Û¾§Û8¯Ç©‘“.
-I
-java:S1068"-Remove this unused "mainPanel" private field.(šÈŞ}8üé¤‘“.
+java:S1068
+"0Remove this unused "logoutButton" private field.(Û¾§Û8¯Ç©‘“.
 O
-java:S1135
-"2Complete the task associated to this TODO comment.(èŠçê8Ğ¨““.
+java:S1135"2Complete the task associated to this TODO comment.(èŠçê8Ğ¨““.
 P
-java:S1068".Remove this unused "backButton" private field.(ê÷ó×ÿÿÿÿÿ8™“¨‘“.
+java:S1068	".Remove this unused "backButton" private field.(ê÷ó×ÿÿÿÿÿ8™“¨‘“.

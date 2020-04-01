@@ -1,9 +1,9 @@
 
-€
-java:S1149Y"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(­¤œ×şÿÿÿÿ
->
-java:S1148b"#Use a logger to log this exception.(«È€ıÿÿÿÿ
 ?
 java:S1148"#Use a logger to log this exception.(«È€ıÿÿÿÿ
 >
 java:S1148x"#Use a logger to log this exception.(«È€ıÿÿÿÿ
+€
+java:S1149Y"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(­¤œ×şÿÿÿÿ
+>
+java:S1148b"#Use a logger to log this exception.(«È€ıÿÿÿÿ

@@ -1,7 +1,9 @@
 package ats.common;
 
+import javax.swing.*;
 import java.sql.*;
 import java.util.Optional;
+import java.util.Vector;
 
 public interface Utilities {
 
@@ -40,5 +42,24 @@ public interface Utilities {
             sqle.printStackTrace();
         }
         return staffExists;
+    }
+
+    static void fillTypeDropdown(String[] credentials, JComboBox typeSelectBox, String table) {
+        try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
+            String sql = String.format("SELECT * FROM %s", table);
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                System.out.println(ps);
+                try (ResultSet rs = ps.executeQuery()) {
+                    Vector<Integer> types = new Vector<>();
+                    while (rs.next()) {
+                        types.add(rs.getInt("blank_type"));
+                    }
+                    final DefaultComboBoxModel<Integer> model = new DefaultComboBoxModel<>(types);
+                    typeSelectBox.setModel(model);
+                }
+            }
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+        }
     }
 }

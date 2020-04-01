@@ -1,15 +1,15 @@
 package ats.pages.guis.handlers.blanks;
 
 import ats.App;
+import ats.common.Utilities;
 import ats.pages.Page;
 
 import javax.swing.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.sql.*;
-import java.util.Vector;
 
-public class BlankGenerator extends Page {
+public class BlankGenerator extends Page implements Utilities {
     //================================================================================
     //region Properties
     //================================================================================
@@ -29,7 +29,7 @@ public class BlankGenerator extends Page {
     //================================================================================
     public BlankGenerator(App app) {
         credentials = app.getDBCredentials();
-        fillTypeDropdown();
+        Utilities.fillTypeDropdown(credentials, typeSelectBox, "blank_type");
 
         //================================================================================
         //region Button Listeners
@@ -82,23 +82,6 @@ public class BlankGenerator extends Page {
     //================================================================================
     //region Methods
     //================================================================================
-    private void fillTypeDropdown() {
-        try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
-            try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM blank_type")) {
-                try (ResultSet rs = ps.executeQuery()) {
-                    Vector<Integer> types = new Vector<>();
-                    while (rs.next()) {
-                        types.add(rs.getInt("blank_type"));
-                    }
-                    final DefaultComboBoxModel<Integer> model = new DefaultComboBoxModel<>(types);
-                    typeSelectBox.setModel(model);
-                }
-            }
-        } catch (SQLException sqle) {
-            sqle.printStackTrace();
-        }
-    }
-
     private long findNextAvailableID(int type) {
         long nextAvailableID = 0;
         boolean existingBlanks = false;
