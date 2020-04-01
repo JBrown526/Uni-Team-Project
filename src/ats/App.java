@@ -2,8 +2,8 @@ package ats;
 
 import ats.pages.*;
 import ats.pages.guis.*;
-import ats.pages.guis.financial.CommissionRate;
-import ats.pages.guis.financial.CommissionRates;
+import ats.pages.guis.handlers.commissions.CommissionRate;
+import ats.pages.guis.handlers.commissions.CommissionRates;
 import ats.pages.guis.handlers.blanks.Blank;
 import ats.pages.guis.handlers.blanks.BlankGenerator;
 import ats.pages.guis.handlers.blanks.Blanks;

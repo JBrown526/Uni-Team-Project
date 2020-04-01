@@ -1,4 +1,4 @@
-package ats.pages.guis.financial;
+package ats.pages.guis.handlers.commissions;
 
 import ats.App;
 import ats.common.Utilities;
