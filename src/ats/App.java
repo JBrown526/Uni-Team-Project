@@ -3,6 +3,7 @@ package ats;
 import ats.pages.*;
 import ats.pages.guis.*;
 import ats.pages.guis.handlers.commissions.CommissionRate;
+import ats.pages.guis.handlers.commissions.CommissionRateAdd;
 import ats.pages.guis.handlers.commissions.CommissionRates;
 import ats.pages.guis.handlers.blanks.Blank;
 import ats.pages.guis.handlers.blanks.BlankGenerator;
@@ -129,6 +130,10 @@ public class App {
 
     public void toCommissionRate(int staffID, int blankType) {
         changeWindow(new CommissionRate(this, staffID, blankType));
+    }
+
+    public void toCommissionRateAdd(int staffID) {
+        changeWindow(new CommissionRateAdd(this, staffID));
     }
 
     // returns user to login page and clears access credentials

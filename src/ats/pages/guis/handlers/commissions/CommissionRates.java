@@ -4,8 +4,6 @@ import ats.App;
 import ats.pages.TablePage;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.*;
@@ -28,12 +26,8 @@ public class CommissionRates extends TablePage {
 
         populateTable();
 
-        newRateButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // TODO: Link this
-            }
-        });
+        newRateButton.addActionListener(e -> app.toCommissionRateAdd(staffID));
+
         viewRateButton.addActionListener(e -> {
             if (selectedCommissionRate != -1) {
                 app.toCommissionRate(staffID, selectedCommissionRate);

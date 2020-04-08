@@ -9,7 +9,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.sql.*;
 
-public class CommissionRate extends TablePage implements Utilities {
+public class CommissionRate extends TablePage implements Utilities, CommissionUtilities {
     private int blankType;
     private int staffID;
     private String[] credentials;
@@ -36,7 +36,7 @@ public class CommissionRate extends TablePage implements Utilities {
             try {
                 float newCommissionRate = Float.parseFloat(rateString);
                 if (isValidDate(date) && !Utilities.isEmpty(date)) {
-                    updateRate(newCommissionRate, date);
+                    updateRate(blankType, newCommissionRate, date);
                 } else {
                     JOptionPane.showMessageDialog(null, "Please enter a valid date");
                     dateField.setText("");
@@ -78,7 +78,8 @@ public class CommissionRate extends TablePage implements Utilities {
         }
     }
 
-    private void updateRate(float rate, String date) {
+    @Override
+    public void updateRate(int blankType, float rate, String date) {
         try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
             try (PreparedStatement ps = conn.prepareStatement("UPDATE ats.commission SET commission = ?, date_set = ? WHERE blank_type = ? AND staff_id = ?;")) {
                 ps.setFloat(1, rate);
