@@ -9,7 +9,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.sql.*;
 
-public class BlankGenerator extends Page implements Utilities {
+public class BlankAdd extends Page implements Utilities {
     //================================================================================
     //region Properties
     //================================================================================
@@ -27,7 +27,7 @@ public class BlankGenerator extends Page implements Utilities {
     //================================================================================
     //region Constructor
     //================================================================================
-    public BlankGenerator(App app) {
+    public BlankAdd(App app) {
         credentials = app.getDBCredentials();
         Utilities.fillTypeDropdown(credentials, typeSelectBox, "blank_type");
 

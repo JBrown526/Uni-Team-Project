@@ -6,7 +6,7 @@ import ats.pages.guis.handlers.commissions.CommissionRate;
 import ats.pages.guis.handlers.commissions.CommissionRateAdd;
 import ats.pages.guis.handlers.commissions.CommissionRates;
 import ats.pages.guis.handlers.blanks.Blank;
-import ats.pages.guis.handlers.blanks.BlankGenerator;
+import ats.pages.guis.handlers.blanks.BlankAdd;
 import ats.pages.guis.handlers.blanks.Blanks;
 import ats.pages.guis.handlers.staff.StaffMember;
 import ats.pages.guis.handlers.staff.StaffMemberAdd;
@@ -108,8 +108,8 @@ public class App {
         changeWindow(new Blank(this, blankID, managerView));
     }
 
-    public void toBlankGenerator() {
-        changeWindow(new BlankGenerator(this));
+    public void toBlankAdd() {
+        changeWindow(new BlankAdd(this));
     }
 
     public void toStaffMembers(boolean adminView) {

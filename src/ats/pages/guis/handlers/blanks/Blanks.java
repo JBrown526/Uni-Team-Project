@@ -50,7 +50,7 @@ public class Blanks extends TablePage {
         //================================================================================
         //region Button Listeners
         //================================================================================
-        generateBlanksButton.addActionListener(e -> app.toBlankGenerator());
+        generateBlanksButton.addActionListener(e -> app.toBlankAdd());
 
         viewBlankButtonStaff.addActionListener(e -> {
             if (selectedBlank != null) {
