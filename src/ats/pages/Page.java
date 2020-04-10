@@ -2,6 +2,7 @@ package ats.pages;
 
 import javax.swing.*;
 import java.awt.event.KeyEvent;
+import java.sql.*;
 import java.util.regex.Pattern;
 
 public abstract class Page {
@@ -29,6 +30,21 @@ public abstract class Page {
 
     public static boolean isValidDate(String d) {
         return DATE_PATTERN.matcher(d).matches();
+    }
+
+    public static boolean isStatus(String[] credentials, String blankID, String desiredStatus) {
+        try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
+            try (PreparedStatement ps = conn.prepareStatement("SELECT blank_status FROM blank WHERE blank_id = ?")) {
+                ps.setString(1, blankID);
+                try (ResultSet rs = ps.executeQuery()) {
+                    rs.next();
+                    return rs.getString("blank_status").equals(desiredStatus);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     private static final Pattern DATE_PATTERN = Pattern.compile(

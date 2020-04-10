@@ -51,7 +51,9 @@ public class Blank extends TablePage implements Utilities {
 
             if (Utilities.staffExists(staffID, credentials)) {
                 if (isValidDate(date)) {
-                    reassignBlank(staffID, date);
+                    if (isAvailable()) {
+                        reassignBlank(staffID, date);
+                    }
                 } else {
                     dateField.setText("");
                     JOptionPane.showMessageDialog(null, "Invalid Date/Date Format supplied. Please use YYYY-MM-DD format");
@@ -107,8 +109,26 @@ public class Blank extends TablePage implements Utilities {
         }
     }
 
+    private boolean isAvailable() {
+        boolean passesChecks = true;
+        if (isStatus(credentials, blankID, "ASGN")) {
+            int input = JOptionPane.showConfirmDialog(null,
+                    "This blank is already assigned, do you wish to reassign it?", "", JOptionPane.YES_NO_OPTION);
+            passesChecks = input == 0;
+        }
+        if (isStatus(credentials, blankID, "VOID")) {
+            JOptionPane.showMessageDialog(null, "This blank has been voided, it cannot be reassigned");
+            passesChecks = false;
+        }
+        if (isStatus(credentials, blankID, "SOLD")) {
+            JOptionPane.showMessageDialog(null, "This blank has been sold, it cannot be reassigned");
+            passesChecks = false;
+        }
+        return passesChecks;
+    }
+
     private void reassignBlank(int staffID, String date) {
-        //TODO: Check for prior assignment/void/sale
+        //TODO: Make sure isn't assigned before received
         try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
             try (PreparedStatement ps = conn.prepareStatement("UPDATE ats.blank SET `staff_id` = ?, `date_assigned` = ?, `blank_status` = ? WHERE blank_id = ?;")) {
                 ps.setInt(1, staffID);
