@@ -31,7 +31,6 @@ public class Blanks extends TablePage implements Utilities {
     private JButton viewBlankButtonManager;
     private JPanel staffPanel;
     private JButton viewBlankButtonStaff;
-    //TODO: these
     private JCheckBox hideVoidedCheckBox;
     private JTextField blankIDField;
     private JButton searchButton;
@@ -45,7 +44,6 @@ public class Blanks extends TablePage implements Utilities {
     //region Constructor
     //================================================================================
     public Blanks(App app, boolean managerView) {
-        //TODO: search for blank
         this.app = app;
         this.managerView = managerView;
 
@@ -146,15 +144,15 @@ public class Blanks extends TablePage implements Utilities {
 
         try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
             try (PreparedStatement ps = conn.prepareStatement(query)) {
-                if (searching) {
-                    if (managerView) {
-                        ps.setString(1, blankID);
-                    } else {
-                        ps.setString(2, blankID);
-                    }
-                }
                 if (!managerView) {
                     ps.setInt(1, app.getStaffID());
+                    if (searching) {
+                        ps.setString(2, blankID);
+                    }
+                } else {
+                    if (searching) {
+                        ps.setString(1, blankID);
+                    }
                 }
                 try (ResultSet rs = ps.executeQuery()) {
                     blankTable.setModel(buildTableModel(rs));
