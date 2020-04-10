@@ -4,8 +4,7 @@ import ats.App;
 import ats.pages.TablePage;
 
 import javax.swing.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.sql.*;
 
 public class Blanks extends TablePage {
@@ -16,6 +15,10 @@ public class Blanks extends TablePage {
     private App app;
     private boolean managerView;
     private String selectedBlank;
+
+    private int conditionCount;
+    private boolean whereInQuery;
+    private String query;
 
     private JButton backButton;
     private JButton logoutButton;
@@ -40,23 +43,28 @@ public class Blanks extends TablePage {
     //region Constructor
     //================================================================================
     public Blanks(App app, boolean managerView) {
-        //TODO: filter blank by status/type
         //TODO: search for blank
         this.app = app;
         this.managerView = managerView;
 
-        populateTable();
-
         // hides manager tools in sales mode and sales tools in manager mode
         if (managerView) {
+            query = "SELECT * FROM blank";
+            conditionCount = 0;
+
             staffPanel.remove(viewBlankButtonStaff);
             mainPanel.remove(staffPanel);
         } else {
+            query = "SELECT * FROM blank WHERE staff_id = ?";
+            conditionCount = 1;
+
             filterPanel.remove(hideAvailableCheckBox);
             managerPanel.remove(generateBlanksButton);
             managerPanel.remove(viewBlankButtonManager);
             mainPanel.remove(managerPanel);
         }
+
+        populateTable();
 
         //================================================================================
         //region Button Listeners
@@ -79,6 +87,13 @@ public class Blanks extends TablePage {
             }
         });
 
+        searchButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+
         logoutButton.addActionListener(e -> app.logout());
         backButton.addActionListener(e -> {
             if (managerView) {
@@ -92,6 +107,11 @@ public class Blanks extends TablePage {
         //================================================================================
         //region Other Listeners
         //================================================================================
+        hideVoidedCheckBox.addItemListener(e -> checkBoxSelected(hideVoidedCheckBox, "VOID"));
+        hideSoldCheckBox.addItemListener(e -> checkBoxSelected(hideSoldCheckBox, "SOLD"));
+        hideAvailableCheckBox.addItemListener(e -> checkBoxSelected(hideAvailableCheckBox, "AVBL"));
+        hideAssignedCheckBox.addItemListener(e -> checkBoxSelected(hideAssignedCheckBox, "ASGN"));
+
         blankTable.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -118,17 +138,11 @@ public class Blanks extends TablePage {
     // populates the table with a specified selection of blanks
     @Override
     protected void populateTable() {
+        //TODO: show staff name instead of id
         String[] credentials = app.getDBCredentials();
-        String sql;
-        // shows all blanks if in manager mode or staff members assigned blanks if in sales mode
-        if (managerView) {
-            sql = "SELECT * FROM blank";
-        } else {
-            sql = "SELECT * FROM blank WHERE staff_id = ?";
-        }
 
         try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
-            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            try (PreparedStatement ps = conn.prepareStatement(query)) {
                 if (!managerView) {
                     ps.setInt(1, app.getStaffID());
                 }
@@ -139,6 +153,33 @@ public class Blanks extends TablePage {
         } catch (SQLException sqle) {
             sqle.printStackTrace();
         }
+    }
+
+    private void checkBoxSelected(JCheckBox cb, String status) {
+        if (cb.isSelected()) {
+            if (conditionCount > 0) {
+                query = query + " AND NOT blank_status = '" + status + "'";
+            } else {
+                query = query + " WHERE NOT blank_status = '" + status + "'";
+            }
+            conditionCount++;
+        } else {
+            query = query.replace(" NOT blank_status = '" + status + "'", "");
+            query = query.replace("AND AND", "AND");
+            query = query.replace("WHERE AND", "WHERE");
+            query = query.replace("AND ", "temp");
+            query = query.replace(" AND", "");
+            query = query.replace("temp", "AND ");
+            conditionCount--;
+
+            if (conditionCount <= 1) {
+                query = query.replace(" AND", "");
+            }
+            if (conditionCount <= 0) {
+                query = query.replace(" WHERE", "");
+            }
+        }
+        populateTable();
     }
     //endregion
 }
