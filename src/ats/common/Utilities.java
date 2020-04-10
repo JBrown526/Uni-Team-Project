@@ -44,6 +44,24 @@ public interface Utilities {
         return staffExists;
     }
 
+    static boolean blankExists(String id, String[] credentials) {
+        boolean staffExists = false;
+
+        try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
+            try (PreparedStatement ps = conn.prepareStatement("SELECT blank_id FROM blank WHERE blank_id = ?;")) {
+                ps.setString(1, id);
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        staffExists = true;
+                    }
+                }
+            }
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+        }
+        return staffExists;
+    }
+
     static void fillTypeDropdown(String[] credentials, JComboBox typeSelectBox, String table) {
         try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
             String sql = String.format("SELECT * FROM %s", table);

@@ -1,13 +1,14 @@
 package ats.pages.guis.handlers.blanks;
 
 import ats.App;
+import ats.common.Utilities;
 import ats.pages.TablePage;
 
 import javax.swing.*;
 import java.awt.event.*;
 import java.sql.*;
 
-public class Blanks extends TablePage {
+public class Blanks extends TablePage implements Utilities {
 
     //================================================================================
     //region Properties
@@ -16,8 +17,9 @@ public class Blanks extends TablePage {
     private boolean managerView;
     private String selectedBlank;
 
+    private boolean searching;
+    private String blankID;
     private int conditionCount;
-    private boolean whereInQuery;
     private String query;
 
     private JButton backButton;
@@ -31,7 +33,7 @@ public class Blanks extends TablePage {
     private JButton viewBlankButtonStaff;
     //TODO: these
     private JCheckBox hideVoidedCheckBox;
-    private JTextField textField1;
+    private JTextField blankIDField;
     private JButton searchButton;
     private JCheckBox hideSoldCheckBox;
     private JCheckBox hideAvailableCheckBox;
@@ -87,12 +89,7 @@ public class Blanks extends TablePage {
             }
         });
 
-        searchButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
+        searchButton.addActionListener(e -> search());
 
         logoutButton.addActionListener(e -> app.logout());
         backButton.addActionListener(e -> {
@@ -119,6 +116,12 @@ public class Blanks extends TablePage {
                 selectedBlank = String.valueOf(blankTable.getValueAt(row, 1));
             }
         });
+        blankIDField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent ke) {
+                restrictInputToPositiveInt(ke, blankIDField, "Blank ID");
+            }
+        });
         //endregion
     }
     //endregion
@@ -143,6 +146,13 @@ public class Blanks extends TablePage {
 
         try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
             try (PreparedStatement ps = conn.prepareStatement(query)) {
+                if (searching) {
+                    if (managerView) {
+                        ps.setString(1, blankID);
+                    } else {
+                        ps.setString(2, blankID);
+                    }
+                }
                 if (!managerView) {
                     ps.setInt(1, app.getStaffID());
                 }
@@ -180,6 +190,27 @@ public class Blanks extends TablePage {
             }
         }
         populateTable();
+    }
+
+    private void search() {
+        blankID = blankIDField.getText();
+        if (Utilities.blankExists(blankID, app.getDBCredentials())) {
+            hideAssignedCheckBox.setSelected(false);
+            hideAvailableCheckBox.setSelected(false);
+            hideSoldCheckBox.setSelected(false);
+            hideVoidedCheckBox.setSelected(false);
+
+            query = "SELECT * FROM blank WHERE blank_id = ?";
+            if (!managerView) {
+                query = "SELECT * FROM blank WHERE staff_id = ? AND blank_id = ?";
+            }
+
+            conditionCount++;
+            searching = true;
+            populateTable();
+        } else {
+            JOptionPane.showMessageDialog(null, "That blank does not exist, please search for a valid blank");
+        }
     }
     //endregion
 }
