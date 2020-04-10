@@ -31,8 +31,6 @@ public class Blank extends TablePage implements Utilities {
     //================================================================================
     public Blank(App app, String blankID, boolean managerView) {
         //TODO: set blank to void
-        //TODO: filter blank by status/type
-        //TODO: search for blank
         this.blankID = blankID;
         credentials = app.getDBCredentials();
 

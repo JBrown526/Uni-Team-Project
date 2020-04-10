@@ -32,6 +32,8 @@ public class Blanks extends TablePage {
     //region Constructor
     //================================================================================
     public Blanks(App app, boolean managerView) {
+        //TODO: filter blank by status/type
+        //TODO: search for blank
         this.app = app;
         this.managerView = managerView;
 
