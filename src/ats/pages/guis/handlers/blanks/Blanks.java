@@ -26,6 +26,14 @@ public class Blanks extends TablePage {
     private JButton viewBlankButtonManager;
     private JPanel staffPanel;
     private JButton viewBlankButtonStaff;
+    //TODO: these
+    private JCheckBox hideVoidedCheckBox;
+    private JTextField textField1;
+    private JButton searchButton;
+    private JCheckBox hideSoldCheckBox;
+    private JCheckBox hideAvailableCheckBox;
+    private JCheckBox hideAssignedCheckBox;
+    private JPanel filterPanel;
     //endregion
 
     //================================================================================
@@ -44,8 +52,9 @@ public class Blanks extends TablePage {
             staffPanel.remove(viewBlankButtonStaff);
             mainPanel.remove(staffPanel);
         } else {
+            filterPanel.remove(hideAvailableCheckBox);
             managerPanel.remove(generateBlanksButton);
-            mainPanel.remove(viewBlankButtonManager);
+            managerPanel.remove(viewBlankButtonManager);
             mainPanel.remove(managerPanel);
         }
 
