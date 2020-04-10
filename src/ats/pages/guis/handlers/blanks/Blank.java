@@ -23,6 +23,7 @@ public class Blank extends TablePage implements Utilities {
     private JTextField staffIDField;
     private JButton reassignButton;
     private JPanel managerPanel;
+    private JTextField dateField;
     //endregion
 
     //================================================================================
@@ -46,10 +47,15 @@ public class Blank extends TablePage implements Utilities {
         //================================================================================
         reassignButton.addActionListener(e -> {
             int staffID = Integer.parseInt(staffIDField.getText());
+            String date = dateField.getText();
 
-            // TODO: Assignment date
             if (Utilities.staffExists(staffID, credentials)) {
-                reassignBlank(staffID);
+                if (isValidDate(date)) {
+                    reassignBlank(staffID, date);
+                } else {
+                    dateField.setText("");
+                    JOptionPane.showMessageDialog(null, "Invalid Date/Date Format supplied. Please use YYYY-MM-DD format");
+                }
             } else {
                 staffIDField.setText("");
                 JOptionPane.showMessageDialog(null, "This Staff Member is not in the System");
@@ -101,12 +107,17 @@ public class Blank extends TablePage implements Utilities {
         }
     }
 
-    private void reassignBlank(int staffID) {
+    private void reassignBlank(int staffID, String date) {
+        //TODO: Check for prior assignment/void/sale
         try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
-            try (PreparedStatement ps = conn.prepareStatement("UPDATE ats.blank SET `staff_id` = ? WHERE blank_id = ?;")) {
+            try (PreparedStatement ps = conn.prepareStatement("UPDATE ats.blank SET `staff_id` = ?, `date_assigned` = ?, `blank_status` = ? WHERE blank_id = ?;")) {
                 ps.setInt(1, staffID);
-                ps.setString(2, blankID);
+                ps.setString(2, date);
+                ps.setString(3, "ASGN");
+                ps.setString(4, blankID);
                 ps.executeUpdate();
+
+                dateField.setText("");
                 staffIDField.setText("");
                 populateTable();
             }

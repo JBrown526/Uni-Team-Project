@@ -115,7 +115,7 @@ public class BlankAdd extends Page implements Utilities {
     private void generateBlank(int type, long id, String date) {
         try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
             try (PreparedStatement ps = conn.prepareStatement(
-                    "INSERT INTO ats.blank (blank_type, blank_id, date_received, void) VALUES (?, ?, ?, 0)")) {
+                    "INSERT INTO ats.blank (blank_type, blank_id, date_received) VALUES (?, ?, ?)")) {
                 ps.setInt(1, type);
                 ps.setString(2, String.valueOf(id));
                 ps.setString(3, date);
