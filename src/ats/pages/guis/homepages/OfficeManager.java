@@ -32,13 +32,7 @@ public class OfficeManager extends Page {
         viewBlanksButton.addActionListener(e -> app.toBlanks(true));
         viewStaffButton.addActionListener(e -> app.toStaffMembers(false));
         reportsButton.addActionListener(e -> app.toReports(true));
-
-        exchangeRatesButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //TODO: View/Set exchange rate page
-            }
-        });
+        exchangeRatesButton.addActionListener(e -> app.toExchangeRates());
 
         backButton.addActionListener(e -> app.logout());
         logoutButton.addActionListener(e -> app.logout());

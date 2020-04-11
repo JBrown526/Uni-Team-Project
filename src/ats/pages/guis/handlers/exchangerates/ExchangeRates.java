@@ -6,10 +6,11 @@ import ats.pages.TablePage;
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.*;
 
 public class ExchangeRates extends TablePage {
     String[] credentials;
-    private String selectedExchangeRate = "";
+    private String selectedExchangeRate;
 
     private JPanel mainPanel;
     private JButton backButton;
@@ -20,6 +21,9 @@ public class ExchangeRates extends TablePage {
 
     public ExchangeRates(App app) {
         credentials = app.getDBCredentials();
+        selectedExchangeRate = "";
+
+        populateTable();
 
         newRateButton.addActionListener(e -> app.toExchangeRateAdd());
         viewRateButton.addActionListener(e -> {
@@ -44,7 +48,15 @@ public class ExchangeRates extends TablePage {
 
     @Override
     protected void populateTable() {
-
+        try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
+            try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM exchange_rate")) {
+                try (ResultSet rs = ps.executeQuery()) {
+                    exchangeRatesTable.setModel(buildTableModel(rs));
+                }
+            }
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+        }
     }
 
     @Override
