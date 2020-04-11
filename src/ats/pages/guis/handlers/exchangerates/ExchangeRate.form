@@ -98,7 +98,7 @@
           </grid>
         </constraints>
         <properties>
-          <background color="-1"/>
+          <background color="-986896"/>
           <enabled value="true"/>
           <foreground color="-16777216"/>
         </properties>
