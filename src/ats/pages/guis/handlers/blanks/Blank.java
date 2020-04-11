@@ -24,6 +24,8 @@ public class Blank extends TablePage implements Utilities {
     private JButton reassignButton;
     private JPanel managerPanel;
     private JTextField dateField;
+    private JButton removeButton;
+    private JButton voidButton;
     //endregion
 
     //================================================================================
@@ -38,6 +40,8 @@ public class Blank extends TablePage implements Utilities {
 
         // hides the manager tools when viewing in sale mode
         if (!managerView) {
+            managerPanel.remove(voidButton);
+            managerPanel.remove(removeButton);
             managerPanel.remove(staffIDField);
             managerPanel.remove(reassignButton);
             mainPanel.remove(managerPanel);
@@ -46,13 +50,26 @@ public class Blank extends TablePage implements Utilities {
         //================================================================================
         //region Button Listeners
         //================================================================================
+        removeButton.addActionListener(e -> {
+            if (isAvailableForRemoval()) {
+                updateStatus("RMVD");
+                app.toBlanks(managerView);
+            }
+        });
+
+        voidButton.addActionListener(e -> {
+            if (isAvailableForVoiding()) {
+                updateStatus("VOID");
+            }
+        });
+
         reassignButton.addActionListener(e -> {
             int staffID = Integer.parseInt(staffIDField.getText());
             String date = dateField.getText();
 
             if (Utilities.staffExists(staffID, credentials)) {
                 if (isValidDate(date)) {
-                    if (isAvailable()) {
+                    if (isAvailableForReassignment()) {
                         reassignBlank(staffID, date);
                     }
                 } else {
@@ -110,7 +127,7 @@ public class Blank extends TablePage implements Utilities {
         }
     }
 
-    private boolean isAvailable() {
+    private boolean isAvailableForReassignment() {
         boolean passesChecks = true;
         if (isStatus(credentials, blankID, "ASGN")) {
             int input = JOptionPane.showConfirmDialog(null,
@@ -132,6 +149,63 @@ public class Blank extends TablePage implements Utilities {
         return passesChecks;
     }
 
+    private boolean isAvailableForVoiding() {
+        int checksFailed = 0;
+        if (isStatus(credentials, blankID, "ASGN")) {
+            int input = JOptionPane.showConfirmDialog(null,
+                    "This blank is already assigned, are you sure you want to void it?", "", JOptionPane.YES_NO_OPTION);
+            checksFailed += input;
+        }
+        if (isStatus(credentials, blankID, "AVBL")) {
+            int input = JOptionPane.showConfirmDialog(null,
+                    "Are you sure you want to void this blank?", "", JOptionPane.YES_NO_OPTION);
+            checksFailed += input;
+        }
+        if (isStatus(credentials, blankID, "RMVD")) {
+            JOptionPane.showMessageDialog(null, "This blank has been removed from stock, it cannot be voided");
+            checksFailed++;
+        }
+        if (isStatus(credentials, blankID, "SOLD")) {
+            JOptionPane.showMessageDialog(null, "This blank has already been sold, it cannot be voided");
+            checksFailed++;
+        }
+        if (isStatus(credentials, blankID, "VOID")) {
+            JOptionPane.showMessageDialog(null, "This blank has already been voided");
+            checksFailed++;
+        }
+
+        return checksFailed <= 0;
+    }
+
+    private boolean isAvailableForRemoval() {
+        int checksFailed = 0;
+        if (isStatus(credentials, blankID, "ASGN")) {
+            int input = JOptionPane.showConfirmDialog(null,
+                    "This blank is already assigned, are you sure you want to remove it from stock?", "", JOptionPane.YES_NO_OPTION);
+            checksFailed += input;
+        }
+        if (isStatus(credentials, blankID, "AVBL")) {
+            int input = JOptionPane.showConfirmDialog(null,
+                    "Are you sure you want to remove this blank from stock?", "", JOptionPane.YES_NO_OPTION);
+            checksFailed += input;
+        }
+        if (isStatus(credentials, blankID, "RMVD")) {
+            JOptionPane.showMessageDialog(null, "This blank has already been removed from stock");
+            checksFailed++;
+        }
+        if (isStatus(credentials, blankID, "SOLD")) {
+            JOptionPane.showMessageDialog(null, "This blank has already been sold, it cannot be removed from stock");
+            checksFailed++;
+        }
+        if (isStatus(credentials, blankID, "VOID")) {
+            int input = JOptionPane.showConfirmDialog(null,
+                    "This blank has been voided, are you sure you want to remove it from stock?", "", JOptionPane.YES_NO_OPTION);
+            checksFailed += input;
+        }
+
+        return checksFailed <= 0;
+    }
+
     private void reassignBlank(int staffID, String date) {
         //TODO: Make sure isn't assigned before received
         try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
@@ -148,6 +222,20 @@ public class Blank extends TablePage implements Utilities {
             }
         } catch (SQLException sqle) {
             sqle.printStackTrace();
+        }
+    }
+
+    private void updateStatus(String newStatus) {
+        try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
+            try (PreparedStatement ps = conn.prepareStatement("UPDATE ats.blank SET blank_status = ? WHERE blank_id = ?")) {
+                ps.setString(1, newStatus);
+                ps.setString(2, blankID);
+                ps.executeUpdate();
+
+                populateTable();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
     //endregion
