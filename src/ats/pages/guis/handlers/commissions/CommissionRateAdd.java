@@ -27,7 +27,7 @@ public class CommissionRateAdd extends Page implements CommissionUtilities {
     public CommissionRateAdd(App app, int staffID) {
         this.staffID = staffID;
         credentials = app.getDBCredentials();
-        Utilities.fillTypeDropdown(credentials, typeSelectBox, "commission");
+        Utilities.fillTypeDropdown(credentials, typeSelectBox, "blank_type");
 
         setRateButton.addActionListener(e -> {
             int type = (int) typeSelectBox.getItemAt(typeSelectBox.getSelectedIndex());

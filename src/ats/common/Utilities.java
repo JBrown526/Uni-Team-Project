@@ -66,7 +66,6 @@ public interface Utilities {
         try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
             String sql = String.format("SELECT * FROM %s", table);
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
-                System.out.println(ps);
                 try (ResultSet rs = ps.executeQuery()) {
                     Vector<Integer> types = new Vector<>();
                     while (rs.next()) {
@@ -74,6 +73,23 @@ public interface Utilities {
                     }
                     final DefaultComboBoxModel<Integer> model = new DefaultComboBoxModel<>(types);
                     typeSelectBox.setModel(model);
+                }
+            }
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+        }
+    }
+
+    static void fillStaffDropdown(String[] credentials, JComboBox staffSelectBox) {
+        try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
+            try (PreparedStatement ps = conn.prepareStatement("SELECT staff_id FROM staff")) {
+                try (ResultSet rs = ps.executeQuery()) {
+                    Vector<Integer> ids = new Vector<>();
+                    while (rs.next()) {
+                        ids.add(rs.getInt("staff_id"));
+                    }
+                    final DefaultComboBoxModel<Integer> model = new DefaultComboBoxModel<>(ids);
+                    staffSelectBox.setModel(model);
                 }
             }
         } catch (SQLException sqle) {
