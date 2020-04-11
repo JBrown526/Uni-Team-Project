@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
+import java.util.Arrays;
 
 public class StockTurnover extends TablePage {
     private String[] credentials;
@@ -36,18 +37,18 @@ public class StockTurnover extends TablePage {
             soldBlanksTable, allAvailableBlanksTable, allAssignedBlanksTable};
     private String[] sqlFull = {
             "SELECT CONCAT(MIN(blank_id), '-', MAX(blank_id)) AS 'FROM/TO BLANK NBRS', COUNT(blank_id) AS 'AMNT' FROM blank " +
-                    "WHERE blank_status = ('AVBL' OR 'ASGN') AND date_received BETWEEN '2019-04-03' AND '2019-07-03' GROUP BY blank_type;",
+                    "WHERE blank_status = ('AVBL' OR 'ASGN') AND date_received BETWEEN ? AND ? GROUP BY blank_type;",
 
             "SELECT staff_id AS CODE, CONCAT(MIN(blank_id), '-', MAX(blank_id)) AS 'FROM/TO BLANKS NBRS', COUNT(blank_id) " +
                     "AS 'AMNT' FROM blank WHERE blank_status = 'ASGN' AND date_received BETWEEN '2019-04-03' AND '2019-07-03' " +
-                    "AND date_assigned BETWEEN '2019-04-03' AND '2019-07-03' GROUP BY blank_type, staff_id;",
+                    "AND date_assigned BETWEEN ? AND ? GROUP BY blank_type, staff_id;",
 
             "SELECT staff_id AS CODE, CONCAT(MIN(blank_id), '-', MAX(blank_id)) AS 'ASSIGNED (FROM/TO)', COUNT(blank_id) " +
                     "AS 'AMNT' FROM blank WHERE blank_status = 'ASGN' AND date_received NOT BETWEEN '2019-04-03' AND '2019-07-03' " +
-                    "AND date_assigned BETWEEN '2019-04-03' AND '2019-07-03' GROUP BY blank_type, staff_id;",
+                    "AND date_assigned BETWEEN ? AND ? GROUP BY blank_type, staff_id;",
 
             "SELECT CONCAT(MIN(blank_id), '-', MAX(blank_id)) AS 'USED (FROM/TO)', COUNT(blank_id) AS 'AMNT' FROM blank " +
-                    "WHERE blank_status = 'SOLD' AND date_sold BETWEEN '2019-04-03' AND '2019-07-03' GROUP BY blank_type;",
+                    "WHERE blank_status = 'SOLD' AND date_sold BETWEEN ? AND ? GROUP BY blank_type;",
 
             "SELECT CONCAT(MIN(blank_id), '-', MAX(blank_id)) AS 'TOTAL AVAILABLE (FROM/TO)', COUNT(blank_id) AS 'AMNT' " +
                     "FROM blank WHERE blank_status = 'AVBL' GROUP BY blank_type;",
@@ -76,23 +77,18 @@ public class StockTurnover extends TablePage {
                     "COUNT(blank_id) AS 'AMNT' FROM blank WHERE blank_status = 'ASGN' AND staff_id = ? GROUP BY blank_type, staff_id;"};
 
     public StockTurnover(App app, boolean managerView) {
-        //TODO: this
         this.managerView = managerView;
         credentials = app.getDBCredentials();
 
-        populateTable();
-
-        generateReportButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
+        generateReportButton.addActionListener(e -> {
+            setDates();
+            populateTable();
         });
 
         viewIndividualTurnoverButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                //TODO: this
             }
         });
         resetViewButton.addActionListener(e -> app.toStockTurnover(managerView));
@@ -117,6 +113,10 @@ public class StockTurnover extends TablePage {
         try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
             for (int i = 0; i < tables.length; i++) {
                 try (PreparedStatement ps = conn.prepareStatement(sqlFull[i])) {
+                    if (i < 4) {
+                        ps.setString(1, reportStartDate);
+                        ps.setString(2, reportEndDate);
+                    }
                     try (ResultSet rs = ps.executeQuery()) {
                         tables[i].setModel(buildTableModel(rs));
                     }
@@ -126,28 +126,21 @@ public class StockTurnover extends TablePage {
             sqle.printStackTrace();
         }
     }
-}
 
-//    SELECT CONCAT(MIN(blank_id), '-', MAX(blank_id)) AS 'FROM/TO BLANK NBRS', COUNT(blank_id) AS 'AMNT'
-//        FROM blank WHERE blank_status = ('AVBL' OR 'ASGN') AND date_received BETWEEN '2019-04-03' AND '2019-07-03'
-//        GROUP BY blank_type;
-//
-//        SELECT staff_id AS 'CODE', CONCAT(MIN(blank_id), '-', MAX(blank_id)) AS 'FROM/TO BLANKS NBRS', COUNT(blank_id) AS 'AMNT'
-//        FROM blank WHERE blank_status = 'ASGN' AND date_received BETWEEN '2019-04-03' AND '2019-07-03' AND date_assigned BETWEEN '2019-04-03' AND '2019-07-03'
-//        GROUP BY blank_type, staff_id;
-//
-//        SELECT staff_id AS 'CODE', CONCAT(MIN(blank_id), '-', MAX(blank_id)) AS 'ASSIGNED (FROM/TO)', COUNT(blank_id) AS 'AMNT'
-//        FROM blank WHERE blank_status = 'ASGN' AND date_received NOT BETWEEN '2019-04-03' AND '2019-07-03' AND date_assigned BETWEEN '2019-04-03' AND '2019-07-03'
-//        GROUP BY blank_type, staff_id;
-//
-//        SELECT CONCAT(MIN(blank_id), '-', MAX(blank_id)) AS 'USED (FROM/TO)', COUNT(blank_id) AS 'AMNT'
-//        FROM blank WHERE blank_status = 'SOLD' AND date_sold BETWEEN '2019-04-03' AND '2019-07-03'
-//        GROUP BY blank_type;
-//
-//        SELECT CONCAT(MIN(blank_id), '-', MAX(blank_id)) AS 'TOTAL AVAILABLE (FROM/TO)', COUNT(blank_id) AS 'AMNT'
-//        FROM blank WHERE blank_status = 'AVBL'
-//        GROUP BY blank_type;
-//
-//        SELECT staff_id AS 'CODE', CONCAT(MIN(blank_id), '-', MAX(blank_id)) AS 'TOTAL ASSIGNED (FROM/TO)', COUNT(blank_id) AS 'AMNT'
-//        FROM blank WHERE blank_status = 'ASGN'
-//        GROUP BY blank_type, staff_id;
+    private void setDates() {
+        String date = dateField.getText();
+        if (isValidDate(date)) {
+            reportEndDate = date;
+            int[] splitDate = Arrays.stream(date.split("-"))
+                    .mapToInt(Integer::parseInt)
+                    .toArray();
+            splitDate[1] = splitDate[1] <= 1 ? 12 : --splitDate[1];
+            reportStartDate = String.format("%04d-%02d-%02d", splitDate[0], splitDate[1], splitDate[2]);
+
+            while (!isValidDate(reportStartDate)) {
+                splitDate[2]--;
+                reportStartDate = String.format("%04d-%02d-%02d", splitDate[0], splitDate[1], splitDate[2]);
+            }
+        }
+    }
+}
