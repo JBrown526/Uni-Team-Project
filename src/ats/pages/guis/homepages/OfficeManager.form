@@ -100,14 +100,14 @@
           <text value="View Blanks"/>
         </properties>
       </component>
-      <component id="3dd02" class="javax.swing.JButton" binding="generateReportsButton">
+      <component id="3dd02" class="javax.swing.JButton" binding="reportsButton">
         <constraints>
           <grid row="6" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <background color="-1"/>
           <foreground color="-16777216"/>
-          <text value="Generate Reports"/>
+          <text value="Reports"/>
         </properties>
       </component>
       <hspacer id="ae785">

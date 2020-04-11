@@ -12,6 +12,7 @@ import ats.pages.guis.handlers.staff.StaffMember;
 import ats.pages.guis.handlers.staff.StaffMemberAdd;
 import ats.pages.guis.handlers.staff.StaffMembers;
 import ats.pages.guis.homepages.OfficeManager;
+import ats.pages.guis.homepages.Reports;
 import ats.pages.guis.homepages.SystemAdministrator;
 import ats.pages.guis.homepages.TravelAgent;
 import ats.pages.guis.reports.StockTurnover;
@@ -135,6 +136,10 @@ public class App {
 
     public void toCommissionRateAdd(int staffID) {
         changeWindow(new CommissionRateAdd(this, staffID));
+    }
+
+    public void toReports(boolean managerView) {
+        changeWindow(new Reports(this, managerView));
     }
 
     public void toStockTurnover(boolean managerView) {

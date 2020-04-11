@@ -17,7 +17,7 @@ public class TravelAgent extends Page {
     private JButton backButton;
     private JPanel mainPanel;
     private JButton logoutButton;
-    private JButton turnoverReportButton;
+    private JButton reportsButton;
     private JButton salesReportButton;
     //endregion
 
@@ -44,13 +44,7 @@ public class TravelAgent extends Page {
                 // NOTE: May move to blank page
             }
         });
-        turnoverReportButton.addActionListener(e -> app.toStockTurnover(false));
-        salesReportButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //TODO: Make sales report page
-            }
-        });
+        reportsButton.addActionListener(e -> app.toReports(false));
 
         backButton.addActionListener(e -> {
             if (app.getStaffRole().equals("OM")) {

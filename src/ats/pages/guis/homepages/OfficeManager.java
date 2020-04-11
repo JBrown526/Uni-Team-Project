@@ -18,7 +18,7 @@ public class OfficeManager extends Page {
     private JButton viewStaffButton;
     private JButton exchangeRatesButton;
     private JButton viewBlanksButton;
-    private JButton generateReportsButton;
+    private JButton reportsButton;
     //endregion
 
     //================================================================================
@@ -31,13 +31,8 @@ public class OfficeManager extends Page {
         saleViewButton.addActionListener(e -> app.toTravelAgent());
         viewBlanksButton.addActionListener(e -> app.toBlanks(true));
         viewStaffButton.addActionListener(e -> app.toStaffMembers(false));
+        reportsButton.addActionListener(e -> app.toReports(true));
 
-        generateReportsButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //TODO: Generate reports page
-            }
-        });
         exchangeRatesButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
