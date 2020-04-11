@@ -38,6 +38,8 @@ public class Blanks extends TablePage implements Utilities {
     private JCheckBox hideAvailableCheckBox;
     private JCheckBox hideAssignedCheckBox;
     private JPanel filterPanel;
+    private JCheckBox hideRemovedCheckBox;
+    private JButton resetViewButton;
     //endregion
 
     //================================================================================
@@ -49,14 +51,14 @@ public class Blanks extends TablePage implements Utilities {
 
         // hides manager tools in sales mode and sales tools in manager mode
         if (managerView) {
-            query = "SELECT * FROM blank";
-            conditionCount = 0;
+            query = "SELECT * FROM blank WHERE NOT blank_status = 'RMVD'";
+            conditionCount = 1;
 
             staffPanel.remove(viewBlankButtonStaff);
             mainPanel.remove(staffPanel);
         } else {
-            query = "SELECT * FROM blank WHERE staff_id = ?";
-            conditionCount = 1;
+            query = "SELECT * FROM blank WHERE NOT blank_status = 'RMVD' AND staff_id = ?";
+            conditionCount = 2;
 
             filterPanel.remove(hideAvailableCheckBox);
             managerPanel.remove(generateBlanksButton);
@@ -88,6 +90,7 @@ public class Blanks extends TablePage implements Utilities {
         });
 
         searchButton.addActionListener(e -> search());
+        resetViewButton.addActionListener(e -> app.toBlanks(managerView));
 
         logoutButton.addActionListener(e -> app.logout());
         backButton.addActionListener(e -> {
@@ -106,6 +109,7 @@ public class Blanks extends TablePage implements Utilities {
         hideSoldCheckBox.addItemListener(e -> checkBoxSelected(hideSoldCheckBox, "SOLD"));
         hideAvailableCheckBox.addItemListener(e -> checkBoxSelected(hideAvailableCheckBox, "AVBL"));
         hideAssignedCheckBox.addItemListener(e -> checkBoxSelected(hideAssignedCheckBox, "ASGN"));
+        hideRemovedCheckBox.addItemListener(e -> checkBoxSelected(hideRemovedCheckBox, "RMVD"));
 
         blankTable.addMouseListener(new MouseAdapter() {
             @Override

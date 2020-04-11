@@ -125,6 +125,10 @@ public class Blank extends TablePage implements Utilities {
             JOptionPane.showMessageDialog(null, "This blank has been sold, it cannot be reassigned");
             passesChecks = false;
         }
+        if (isStatus(credentials, blankID, "RMVD")) {
+            JOptionPane.showMessageDialog(null, "This blank has been removed from stock, it can no longer be used");
+            passesChecks = false;
+        }
         return passesChecks;
     }
 
