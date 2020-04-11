@@ -33,21 +33,8 @@ public class ExchangeRateAdd extends Page implements Utilities, ExchangeRateUtil
             String date = dateField.getText();
             try {
                 float newExchangeRate = Float.parseFloat(rateString);
-                if (Pattern.matches("[A-Z][A-Z][A-Z]", currencyCode)) {
-                    if (!ExchangeRateUtilities.exchangeRateExists(currencyCode, credentials)) {
-                        if (isValidDate(date) && !Utilities.isEmpty(date)) {
-                            updateRate(currencyCode, newExchangeRate, date);
-                            JOptionPane.showMessageDialog(null, "Exchange rate successfully added");
-                        } else {
-                            JOptionPane.showMessageDialog(null, "Please enter a valid date");
-                        }
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Exchange rate is already in the system, please update it instead.");
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(null, "Please provide a valid currency code.\n" +
-                            "Please note: codes should be 3 letters long and must be capitalised");
-                    currencyCodeField.setText("");
+                if (ExchangeRateUtilities.conditionsMet(currencyCode, date, credentials)) {
+                    updateRate(currencyCode, newExchangeRate, date);
                 }
             } catch (NumberFormatException nfe) {
                 JOptionPane.showMessageDialog(null, "Exchange rates must be in the form of a valid float");

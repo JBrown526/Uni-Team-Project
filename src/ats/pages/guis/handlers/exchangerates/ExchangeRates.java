@@ -47,6 +47,11 @@ public class ExchangeRates extends TablePage {
     }
 
     @Override
+    public JPanel getMainPanel() {
+        return mainPanel;
+    }
+
+    @Override
     protected void populateTable() {
         try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
             try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM exchange_rate")) {
@@ -57,10 +62,5 @@ public class ExchangeRates extends TablePage {
         } catch (SQLException sqle) {
             sqle.printStackTrace();
         }
-    }
-
-    @Override
-    public JPanel getMainPanel() {
-        return mainPanel;
     }
 }

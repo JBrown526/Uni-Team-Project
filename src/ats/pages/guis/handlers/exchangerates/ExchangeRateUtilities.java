@@ -1,6 +1,11 @@
 package ats.pages.guis.handlers.exchangerates;
 
+import ats.common.Utilities;
+import ats.pages.Page;
+
+import javax.swing.*;
 import java.sql.*;
+import java.util.regex.Pattern;
 
 public interface ExchangeRateUtilities {
 
@@ -22,4 +27,22 @@ public interface ExchangeRateUtilities {
         return exchangeRateExists;
     }
 
+    static boolean conditionsMet(String currencyCode, String date, String[] credentials) {
+        if (Pattern.matches("[A-Z][A-Z][A-Z]", currencyCode)) {
+            if (!ExchangeRateUtilities.exchangeRateExists(currencyCode, credentials)) {
+                if (Page.isValidDate(date) && !Utilities.isEmpty(date)) {
+                    JOptionPane.showMessageDialog(null, "Exchange rate successfully added");
+                    return true;
+                } else {
+                    JOptionPane.showMessageDialog(null, "Please enter a valid date");
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Exchange rate is already in the system, please update it instead.");
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Please provide a valid currency code.\n" +
+                    "Please note: codes should be 3 letters long and must be capitalised");
+        }
+        return false;
+    }
 }
