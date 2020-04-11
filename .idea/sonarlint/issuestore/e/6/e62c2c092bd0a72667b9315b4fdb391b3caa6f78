@@ -1,8 +1,10 @@
 
+Z	java:S106E"9Replace this use of System.out or System.err by a logger.(ÇŞá”ıÿÿÿÿ8­šı¬“.
+E
+java:S1148<"#Use a logger to log this exception.(«È€ıÿÿÿÿ8·åé¬“.
+‡
+java:S1149G"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(­¤œ×şÿÿÿÿ8·åé¬“.
 E
 java:S1148*"#Use a logger to log this exception.(«È€ıÿÿÿÿ8Ìı¬‰“.
 E
-java:S1148>"#Use a logger to log this exception.(«È€ıÿÿÿÿ8·åé¬“.
-‡
-java:S11495"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(­¤œ×şÿÿÿÿ8·åé¬“.
-Z	java:S1063"9Replace this use of System.out or System.err by a logger.(ÇŞá”ıÿÿÿÿ8­šı¬“.
+java:S1148P"#Use a logger to log this exception.(«È€ıÿÿÿÿ8æŒşÉ–.

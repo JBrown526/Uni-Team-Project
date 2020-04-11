@@ -1,9 +1,13 @@
 
 >
-java:S1604"(Make this anonymous inner class a lambda(Şİˆš
+java:S1604("(Make this anonymous inner class a lambda(üÀâ¹
 >
-java:S1604%"(Make this anonymous inner class a lambda(üÀâ¹
+java:S1604""(Make this anonymous inner class a lambda(Şİˆš
+R
+java:S1068"5Remove this unused "salesReportButton" private field.(ò¸˜‘8ÂßÈ–.
 H
-java:S1135""2Complete the task associated to this TODO comment.(Ø¨è°
+java:S1135+"2Complete the task associated to this TODO comment.(¢”ò
 H
-java:S1135("2Complete the task associated to this TODO comment.(¢”ò
+java:S1135%"2Complete the task associated to this TODO comment.(Ø¨è°
+O
+java:S1135"2Complete the task associated to this TODO comment.(‚§¯Ë8Ï…´È–.
