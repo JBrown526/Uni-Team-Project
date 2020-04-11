@@ -8,6 +8,7 @@
     <properties>
       <background color="-986896"/>
       <enabled value="true"/>
+      <foreground color="-986896"/>
     </properties>
     <border type="none"/>
     <children>
