@@ -29,15 +29,11 @@ public interface ExchangeRateUtilities {
 
     static boolean conditionsMet(String currencyCode, String date, String[] credentials) {
         if (Pattern.matches("[A-Z][A-Z][A-Z]", currencyCode)) {
-            if (!ExchangeRateUtilities.exchangeRateExists(currencyCode, credentials)) {
-                if (Page.isValidDate(date) && !Utilities.isEmpty(date)) {
-                    JOptionPane.showMessageDialog(null, "Exchange rate successfully added");
-                    return true;
-                } else {
-                    JOptionPane.showMessageDialog(null, "Please enter a valid date");
-                }
+            if (Page.isValidDate(date) && !Utilities.isEmpty(date)) {
+                JOptionPane.showMessageDialog(null, "Exchange rate successfully added");
+                return true;
             } else {
-                JOptionPane.showMessageDialog(null, "Exchange rate is already in the system, please update it instead.");
+                JOptionPane.showMessageDialog(null, "Please enter a valid date");
             }
         } else {
             JOptionPane.showMessageDialog(null, "Please provide a valid currency code.\n" +

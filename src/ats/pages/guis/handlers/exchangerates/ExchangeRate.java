@@ -26,10 +26,17 @@ public class ExchangeRate extends TablePage {
 
         populateTable();
 
-        updateButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
+        updateButton.addActionListener(e -> {
+            String rateString = exchangeRateField.getText();
+            String date = dateField.getText();
+            try {
+                float newExchangeRate = Float.parseFloat(rateString);
+                if (ExchangeRateUtilities.conditionsMet(currencyCode, date, credentials)) {
+                    updateRate(currencyCode, newExchangeRate, date);
+                }
+            } catch (NumberFormatException nfe) {
+                JOptionPane.showMessageDialog(null, "Exchange rates must be in the form of a valid float");
+                exchangeRateField.setText("");
             }
         });
 
@@ -50,6 +57,23 @@ public class ExchangeRate extends TablePage {
                 try (ResultSet rs = ps.executeQuery()) {
                     exchangeRateTable.setModel(buildTableModel(rs));
                 }
+            }
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+        }
+    }
+
+    public void updateRate(String currencyCode, float rate, String date) {
+        try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
+            try (PreparedStatement ps = conn.prepareStatement("UPDATE ats.exchange_rate SET exchange_rate = ?, date_set = ? WHERE currency_code = ?")) {
+                ps.setFloat(1, rate);
+                ps.setString(2, date);
+                ps.setString(3, currencyCode);
+                ps.executeUpdate();
+
+                exchangeRateField.setText("");
+                dateField.setText("");
+                populateTable();
             }
         } catch (SQLException sqle) {
             sqle.printStackTrace();
