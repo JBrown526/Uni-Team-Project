@@ -4,23 +4,20 @@ import ats.App;
 import ats.pages.TablePage;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
-import java.util.Vector;
 
 public class StockTurnover extends TablePage {
     private String[] credentials;
     private boolean managerView;
-
-    Vector<String> columnNames;
-    Vector<Vector<Object>> data;
+    private boolean displayAllStaff;
+    private String reportEndDate;
+    private String reportStartDate;
 
     private JPanel mainPanel;
     private JButton backButton;
     private JButton logoutButton;
-    private JTable stockTurnoverTable;
     private JPanel managerPanel;
     private JButton viewIndividualTurnoverButton;
     private JButton resetViewButton;
@@ -28,16 +25,69 @@ public class StockTurnover extends TablePage {
     private JButton generateReportButton;
     private JTextField dateField;
 
+    private JTable newBlanksTable;
+    private JTable assignedNewBlanksTable;
+    private JTable assignedBlanksTable;
+    private JTable soldBlanksTable;
+    private JTable allAvailableBlanksTable;
+    private JTable allAssignedBlanksTable;
+
+    private JTable[] tables = {newBlanksTable, assignedNewBlanksTable, assignedBlanksTable,
+            soldBlanksTable, allAvailableBlanksTable, allAssignedBlanksTable};
+    private String[] sqlFull = {
+            "SELECT CONCAT(MIN(blank_id), '-', MAX(blank_id)) AS 'FROM/TO BLANK NBRS', COUNT(blank_id) AS 'AMNT' FROM blank " +
+                    "WHERE blank_status = ('AVBL' OR 'ASGN') AND date_received BETWEEN '2019-04-03' AND '2019-07-03' GROUP BY blank_type;",
+
+            "SELECT staff_id AS CODE, CONCAT(MIN(blank_id), '-', MAX(blank_id)) AS 'FROM/TO BLANKS NBRS', COUNT(blank_id) " +
+                    "AS 'AMNT' FROM blank WHERE blank_status = 'ASGN' AND date_received BETWEEN '2019-04-03' AND '2019-07-03' " +
+                    "AND date_assigned BETWEEN '2019-04-03' AND '2019-07-03' GROUP BY blank_type, staff_id;",
+
+            "SELECT staff_id AS CODE, CONCAT(MIN(blank_id), '-', MAX(blank_id)) AS 'ASSIGNED (FROM/TO)', COUNT(blank_id) " +
+                    "AS 'AMNT' FROM blank WHERE blank_status = 'ASGN' AND date_received NOT BETWEEN '2019-04-03' AND '2019-07-03' " +
+                    "AND date_assigned BETWEEN '2019-04-03' AND '2019-07-03' GROUP BY blank_type, staff_id;",
+
+            "SELECT CONCAT(MIN(blank_id), '-', MAX(blank_id)) AS 'USED (FROM/TO)', COUNT(blank_id) AS 'AMNT' FROM blank " +
+                    "WHERE blank_status = 'SOLD' AND date_sold BETWEEN '2019-04-03' AND '2019-07-03' GROUP BY blank_type;",
+
+            "SELECT CONCAT(MIN(blank_id), '-', MAX(blank_id)) AS 'TOTAL AVAILABLE (FROM/TO)', COUNT(blank_id) AS 'AMNT' " +
+                    "FROM blank WHERE blank_status = 'AVBL' GROUP BY blank_type;",
+
+            "SELECT staff_id AS CODE, CONCAT(MIN(blank_id), '-', MAX(blank_id)) AS 'TOTAL ASSIGNED (FROM/TO)', " +
+                    "COUNT(blank_id) AS 'AMNT' FROM blank WHERE blank_status = 'ASGN' GROUP BY blank_type, staff_id;"};
+    private String[] sqlIndividual = {
+            "SELECT CONCAT(MIN(blank_id), '-', MAX(blank_id)) AS 'FROM/TO BLANK NBRS', COUNT(blank_id) AS 'AMNT' FROM blank " +
+                    "WHERE blank_status = ('AVBL' OR 'ASGN') AND date_received BETWEEN '2019-04-03' AND '2019-07-03' GROUP BY blank_type;",
+
+            "SELECT staff_id AS CODE, CONCAT(MIN(blank_id), '-', MAX(blank_id)) AS 'FROM/TO BLANKS NBRS', COUNT(blank_id) " +
+                    "AS 'AMNT' FROM blank WHERE blank_status = 'ASGN' AND date_received BETWEEN '2019-04-03' AND '2019-07-03' " +
+                    "AND date_assigned BETWEEN '2019-04-03' AND '2019-07-03' AND staff_id = ? GROUP BY blank_type, staff_id;",
+
+            "SELECT staff_id AS CODE, CONCAT(MIN(blank_id), '-', MAX(blank_id)) AS 'ASSIGNED (FROM/TO)', COUNT(blank_id) " +
+                    "AS 'AMNT' FROM blank WHERE blank_status = 'ASGN' AND date_received NOT BETWEEN '2019-04-03' AND '2019-07-03' " +
+                    "AND date_assigned BETWEEN '2019-04-03' AND '2019-07-03' AND staff_id = ? GROUP BY blank_type, staff_id;",
+
+            "SELECT CONCAT(MIN(blank_id), '-', MAX(blank_id)) AS 'USED (FROM/TO)', COUNT(blank_id) AS 'AMNT' FROM blank " +
+                    "WHERE blank_status = 'SOLD' AND date_sold BETWEEN '2019-04-03' AND '2019-07-03' GROUP BY blank_type;",
+
+            "SELECT CONCAT(MIN(blank_id), '-', MAX(blank_id)) AS 'TOTAL AVAILABLE (FROM/TO)', COUNT(blank_id) AS 'AMNT' " +
+                    "FROM blank WHERE blank_status = 'AVBL' GROUP BY blank_type;",
+
+            "SELECT staff_id AS CODE, CONCAT(MIN(blank_id), '-', MAX(blank_id)) AS 'TOTAL ASSIGNED (FROM/TO)', " +
+                    "COUNT(blank_id) AS 'AMNT' FROM blank WHERE blank_status = 'ASGN' AND staff_id = ? GROUP BY blank_type, staff_id;"};
+
     public StockTurnover(App app, boolean managerView) {
         //TODO: this
         this.managerView = managerView;
         credentials = app.getDBCredentials();
 
-        columnNames = new Vector<>();
-        data = new Vector<>();
-
         populateTable();
-        showResults();
+
+        generateReportButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
 
         viewIndividualTurnoverButton.addActionListener(new ActionListener() {
             @Override
@@ -65,57 +115,21 @@ public class StockTurnover extends TablePage {
     @Override
     protected void populateTable() {
         try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
-            try (PreparedStatement ps = conn.prepareStatement(
-                    "SELECT CONCAT(MIN(blank_id), '-', MAX(blank_id)) AS 'FROM/TO BLANK NBRS', COUNT(blank_id) AS 'AMNT' " +
-                            "FROM blank WHERE blank_status = 'AVBL' AND date_received BETWEEN '2019-04-03' AND '2019-07-03' " +
-                            "GROUP BY blank_type;\n")) {
-                try (ResultSet rs = ps.executeQuery()) {
-                    makeTable(rs);
-                }
-            }
-            try (PreparedStatement ps = conn.prepareStatement(
-                    "SELECT staff_id AS 'CODE', CONCAT(MIN(blank_id), '-', MAX(blank_id)) AS 'FROM/TO BLANKS NBRS', COUNT(blank_id) AS 'AMNT'\n" +
-                            "        FROM blank WHERE blank_status = 'ASGN' AND date_received BETWEEN '2019-04-03' AND '2019-07-03' AND date_assigned BETWEEN '2019-04-03' AND '2019-07-03'\n" +
-                            "        GROUP BY blank_type, staff_id;")) {
-                try (ResultSet rs = ps.executeQuery()) {
-                    makeTable(rs);
+            for (int i = 0; i < tables.length; i++) {
+                try (PreparedStatement ps = conn.prepareStatement(sqlFull[i])) {
+                    try (ResultSet rs = ps.executeQuery()) {
+                        tables[i].setModel(buildTableModel(rs));
+                    }
                 }
             }
         } catch (SQLException sqle) {
             sqle.printStackTrace();
         }
     }
-
-    private void makeTable(ResultSet rs) throws SQLException {
-        ResultSetMetaData metaData = rs.getMetaData();
-
-        int columnCount = metaData.getColumnCount();
-        for (int column = 1; column <= columnCount; column++) {
-            columnNames.add(metaData.getColumnName(column));
-        }
-
-        while (rs.next()) {
-            Vector<Object> vector = new Vector<>();
-            for (int columnIndex = 1; columnIndex <= columnCount; columnIndex++) {
-                vector.add(rs.getObject(columnIndex));
-            }
-            data.add(vector);
-        }
-    }
-
-    private void showResults() {
-        DefaultTableModel dtm = new DefaultTableModel(data, columnNames) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
-        stockTurnoverTable.setModel(dtm);
-    }
 }
 
 //    SELECT CONCAT(MIN(blank_id), '-', MAX(blank_id)) AS 'FROM/TO BLANK NBRS', COUNT(blank_id) AS 'AMNT'
-//        FROM blank WHERE blank_status = 'AVBL' AND date_received BETWEEN '2019-04-03' AND '2019-07-03'
+//        FROM blank WHERE blank_status = ('AVBL' OR 'ASGN') AND date_received BETWEEN '2019-04-03' AND '2019-07-03'
 //        GROUP BY blank_type;
 //
 //        SELECT staff_id AS 'CODE', CONCAT(MIN(blank_id), '-', MAX(blank_id)) AS 'FROM/TO BLANKS NBRS', COUNT(blank_id) AS 'AMNT'
@@ -130,7 +144,7 @@ public class StockTurnover extends TablePage {
 //        FROM blank WHERE blank_status = 'SOLD' AND date_sold BETWEEN '2019-04-03' AND '2019-07-03'
 //        GROUP BY blank_type;
 //
-//        SELECT 'CODE', CONCAT(MIN(blank_id), '-', MAX(blank_id)) AS 'TOTAL AVAILABLE (FROM/TO)', COUNT(blank_id) AS 'AMNT'
+//        SELECT CONCAT(MIN(blank_id), '-', MAX(blank_id)) AS 'TOTAL AVAILABLE (FROM/TO)', COUNT(blank_id) AS 'AMNT'
 //        FROM blank WHERE blank_status = 'AVBL'
 //        GROUP BY blank_type;
 //

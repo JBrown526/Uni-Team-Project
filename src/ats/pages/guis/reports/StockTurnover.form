@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="ats.pages.guis.reports.StockTurnover">
-  <grid id="27dc6" binding="mainPanel" layout-manager="GridLayoutManager" row-count="8" column-count="9" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+  <grid id="27dc6" binding="mainPanel" layout-manager="GridLayoutManager" row-count="4" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
-      <xy x="20" y="20" width="744" height="400"/>
+      <xy x="20" y="20" width="764" height="418"/>
     </constraints>
     <properties>
       <background color="-986896"/>
@@ -11,114 +11,10 @@
     </properties>
     <border type="none"/>
     <children>
-      <component id="cb20d" class="javax.swing.JLabel">
-        <constraints>
-          <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <font size="48"/>
-          <foreground color="-16777216"/>
-          <text value="Air Ticket Sales (ATS)"/>
-        </properties>
-      </component>
-      <vspacer id="c82d">
-        <constraints>
-          <grid row="2" column="4" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
-        </constraints>
-      </vspacer>
-      <component id="47117" class="javax.swing.JLabel">
-        <constraints>
-          <grid row="1" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <font size="36"/>
-          <foreground color="-16777216"/>
-          <text value="------ AirVia Ltd. ------"/>
-        </properties>
-      </component>
-      <hspacer id="93dc6">
-        <constraints>
-          <grid row="0" column="5" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-        </constraints>
-      </hspacer>
-      <hspacer id="15911">
-        <constraints>
-          <grid row="0" column="7" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-        </constraints>
-      </hspacer>
-      <hspacer id="34b71">
-        <constraints>
-          <grid row="0" column="8" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-        </constraints>
-      </hspacer>
-      <hspacer id="b6f35">
-        <constraints>
-          <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-        </constraints>
-      </hspacer>
-      <hspacer id="fbc71">
-        <constraints>
-          <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-        </constraints>
-      </hspacer>
-      <hspacer id="b4c1d">
-        <constraints>
-          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-        </constraints>
-      </hspacer>
-      <component id="78dca" class="javax.swing.JButton" binding="backButton" default-binding="true">
-        <constraints>
-          <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <background color="-1"/>
-          <foreground color="-16777216"/>
-          <text value="Back"/>
-        </properties>
-      </component>
-      <component id="d515b" class="javax.swing.JButton" binding="logoutButton" default-binding="true">
-        <constraints>
-          <grid row="0" column="6" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <background color="-1"/>
-          <foreground color="-16777216"/>
-          <text value="Logout"/>
-        </properties>
-      </component>
-      <vspacer id="1e26">
-        <constraints>
-          <grid row="7" column="4" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
-        </constraints>
-      </vspacer>
-      <vspacer id="9c1a1">
-        <constraints>
-          <grid row="6" column="4" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
-        </constraints>
-      </vspacer>
-      <scrollpane id="9315b">
-        <constraints>
-          <grid row="5" column="4" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <background color="-986896"/>
-        </properties>
-        <border type="none"/>
-        <children>
-          <component id="a334d" class="javax.swing.JTable" binding="stockTurnoverTable">
-            <constraints/>
-            <properties>
-              <autoCreateRowSorter value="true"/>
-              <background color="-1"/>
-              <foreground color="-16777216"/>
-            </properties>
-          </component>
-        </children>
-      </scrollpane>
-      <grid id="be69c" binding="managerPanel" layout-manager="GridLayoutManager" row-count="2" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+      <grid id="ff0b1" layout-manager="GridLayoutManager" row-count="5" column-count="8" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
         <margin top="0" left="0" bottom="0" right="0"/>
         <constraints>
-          <grid row="3" column="4" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <background color="-986896"/>
@@ -126,100 +22,351 @@
         </properties>
         <border type="empty"/>
         <children>
-          <hspacer id="b44d">
+          <component id="cb20d" class="javax.swing.JLabel">
             <constraints>
-              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+              <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <font size="48"/>
+              <foreground color="-16777216"/>
+              <text value="Air Ticket Sales (ATS)"/>
+            </properties>
+          </component>
+          <vspacer id="af0d2">
+            <constraints>
+              <grid row="2" column="4" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+            </constraints>
+          </vspacer>
+          <component id="47117" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="1" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <font size="36"/>
+              <foreground color="-16777216"/>
+              <text value="------ AirVia Ltd. ------"/>
+            </properties>
+          </component>
+          <hspacer id="310c7">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
           </hspacer>
-          <component id="c02df" class="javax.swing.JButton" binding="viewIndividualTurnoverButton" default-binding="true">
+          <hspacer id="f27f0">
             <constraints>
-              <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+          </hspacer>
+          <hspacer id="e3db2">
+            <constraints>
+              <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+          </hspacer>
+          <hspacer id="aa7cd">
+            <constraints>
+              <grid row="0" column="5" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+          </hspacer>
+          <hspacer id="64d50">
+            <constraints>
+              <grid row="0" column="7" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+          </hspacer>
+          <component id="78dca" class="javax.swing.JButton" binding="backButton" default-binding="true">
+            <constraints>
+              <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <background color="-1"/>
               <foreground color="-16777216"/>
-              <text value="View Individual Turnover"/>
+              <text value="Back"/>
             </properties>
           </component>
-          <component id="5d307" class="javax.swing.JComboBox" binding="staffMemberComboBox">
+          <component id="d515b" class="javax.swing.JButton" binding="logoutButton" default-binding="true">
             <constraints>
-              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+              <grid row="0" column="6" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <background color="-1"/>
               <foreground color="-16777216"/>
+              <text value="Logout"/>
             </properties>
           </component>
-          <component id="e9dd8" class="javax.swing.JLabel">
+          <grid id="be69c" binding="managerPanel" layout-manager="GridLayoutManager" row-count="2" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
-              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="3" column="4" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <background color="-986896"/>
-              <foreground color="-16777216"/>
-              <text value="Staff ID:"/>
+              <foreground color="-986896"/>
             </properties>
-          </component>
+            <border type="empty"/>
+            <children>
+              <hspacer id="b44d">
+                <constraints>
+                  <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+              </hspacer>
+              <component id="c02df" class="javax.swing.JButton" binding="viewIndividualTurnoverButton" default-binding="true">
+                <constraints>
+                  <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <background color="-1"/>
+                  <foreground color="-16777216"/>
+                  <text value="View Individual Turnover"/>
+                </properties>
+              </component>
+              <component id="5d307" class="javax.swing.JComboBox" binding="staffMemberComboBox">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <background color="-1"/>
+                  <foreground color="-16777216"/>
+                </properties>
+              </component>
+              <component id="e9dd8" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <background color="-986896"/>
+                  <foreground color="-16777216"/>
+                  <text value="Staff ID:"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+          <grid id="fcabf" layout-manager="GridLayoutManager" row-count="2" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <grid row="4" column="4" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <background color="-986896"/>
+            </properties>
+            <border type="empty"/>
+            <children>
+              <component id="b7b81" class="javax.swing.JButton" binding="resetViewButton" default-binding="true">
+                <constraints>
+                  <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <background color="-1"/>
+                  <foreground color="-16777216"/>
+                  <text value="Reset View"/>
+                </properties>
+              </component>
+              <hspacer id="31560">
+                <constraints>
+                  <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+              </hspacer>
+              <component id="40245" class="javax.swing.JButton" binding="generateReportButton" default-binding="true">
+                <constraints>
+                  <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <background color="-1"/>
+                  <foreground color="-16777216"/>
+                  <text value="Generate Report"/>
+                </properties>
+              </component>
+              <component id="a2168" class="javax.swing.JTextField" binding="dateField">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <background color="-1"/>
+                  <foreground color="-16777216"/>
+                </properties>
+              </component>
+              <component id="8e8b7" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <background color="-986896"/>
+                  <foreground color="-16777216"/>
+                  <text value="Report End Date:"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
         </children>
       </grid>
-      <grid id="fcabf" layout-manager="GridLayoutManager" row-count="2" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+      <grid id="5207e" layout-manager="GridLayoutManager" row-count="1" column-count="8" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
         <margin top="0" left="0" bottom="0" right="0"/>
         <constraints>
-          <grid row="4" column="4" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <background color="-986896"/>
         </properties>
         <border type="empty"/>
         <children>
-          <component id="b7b81" class="javax.swing.JButton" binding="resetViewButton" default-binding="true">
+          <scrollpane id="9315b">
             <constraints>
-              <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <background color="-1"/>
-              <foreground color="-16777216"/>
-              <text value="Reset View"/>
+              <alignmentX value="0.0"/>
+              <background color="-986896"/>
+              <horizontalScrollBarPolicy value="30"/>
+              <verticalScrollBarPolicy value="20"/>
             </properties>
-          </component>
-          <hspacer id="31560">
+            <border type="none"/>
+            <children>
+              <component id="a334d" class="javax.swing.JTable" binding="newBlanksTable">
+                <constraints/>
+                <properties>
+                  <autoCreateRowSorter value="true"/>
+                  <autoResizeMode value="4"/>
+                  <background color="-1"/>
+                  <cellSelectionEnabled value="false"/>
+                  <foreground color="-16777216"/>
+                  <rowSelectionAllowed value="false"/>
+                </properties>
+              </component>
+            </children>
+          </scrollpane>
+          <scrollpane id="677fc">
             <constraints>
-              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-            </constraints>
-          </hspacer>
-          <component id="40245" class="javax.swing.JButton" binding="generateReportButton" default-binding="true">
-            <constraints>
-              <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+              <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <background color="-1"/>
-              <foreground color="-16777216"/>
-              <text value="Generate Report"/>
+              <alignmentX value="0.0"/>
+              <background color="-986896"/>
             </properties>
-          </component>
-          <component id="a2168" class="javax.swing.JTextField" binding="dateField">
+            <border type="none"/>
+            <children>
+              <component id="a5d5f" class="javax.swing.JTable" binding="assignedNewBlanksTable">
+                <constraints/>
+                <properties>
+                  <autoCreateRowSorter value="true"/>
+                  <autoResizeMode value="4"/>
+                  <background color="-1"/>
+                  <foreground color="-16777216"/>
+                </properties>
+              </component>
+            </children>
+          </scrollpane>
+          <scrollpane id="c7571">
             <constraints>
-              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                <preferred-size width="150" height="-1"/>
+              <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <alignmentX value="0.0"/>
+              <background color="-986896"/>
+            </properties>
+            <border type="none"/>
+            <children>
+              <component id="833ed" class="javax.swing.JTable" binding="assignedBlanksTable">
+                <constraints/>
+                <properties>
+                  <autoCreateRowSorter value="true"/>
+                  <autoResizeMode value="4"/>
+                  <background color="-1"/>
+                  <foreground color="-16777216"/>
+                </properties>
+              </component>
+            </children>
+          </scrollpane>
+          <scrollpane id="c337">
+            <constraints>
+              <grid row="0" column="6" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <alignmentX value="0.0"/>
+              <background color="-986896"/>
+            </properties>
+            <border type="none"/>
+            <children>
+              <component id="c5228" class="javax.swing.JTable" binding="allAssignedBlanksTable">
+                <constraints/>
+                <properties>
+                  <autoCreateRowSorter value="true"/>
+                  <autoResizeMode value="4"/>
+                  <background color="-1"/>
+                  <foreground color="-16777216"/>
+                </properties>
+              </component>
+            </children>
+          </scrollpane>
+          <scrollpane id="471c2">
+            <constraints>
+              <grid row="0" column="5" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <alignmentX value="0.0"/>
+              <background color="-986896"/>
+            </properties>
+            <border type="none"/>
+            <children>
+              <component id="26563" class="javax.swing.JTable" binding="allAvailableBlanksTable">
+                <constraints/>
+                <properties>
+                  <autoCreateRowSorter value="true"/>
+                  <autoResizeMode value="4"/>
+                  <background color="-1"/>
+                  <foreground color="-16777216"/>
+                </properties>
+              </component>
+            </children>
+          </scrollpane>
+          <scrollpane id="d2ef4">
+            <constraints>
+              <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <alignmentX value="0.0"/>
+              <background color="-986896"/>
+            </properties>
+            <border type="none"/>
+            <children>
+              <component id="88479" class="javax.swing.JTable" binding="soldBlanksTable">
+                <constraints/>
+                <properties>
+                  <autoCreateRowSorter value="true"/>
+                  <autoResizeMode value="4"/>
+                  <background color="-1"/>
+                  <foreground color="-16777216"/>
+                </properties>
+              </component>
+            </children>
+          </scrollpane>
+          <hspacer id="cfb66">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
+                <minimum-size width="20" height="-1"/>
+                <maximum-size width="20" height="-1"/>
               </grid>
             </constraints>
-            <properties>
-              <background color="-1"/>
-              <foreground color="-16777216"/>
-            </properties>
-          </component>
-          <component id="8e8b7" class="javax.swing.JLabel">
+          </hspacer>
+          <hspacer id="bd6bd">
             <constraints>
-              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="0" column="7" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
+                <minimum-size width="20" height="-1"/>
+                <maximum-size width="20" height="-1"/>
+              </grid>
             </constraints>
-            <properties>
-              <background color="-986896"/>
-              <foreground color="-16777216"/>
-              <text value="Report End Date:"/>
-            </properties>
-          </component>
+          </hspacer>
         </children>
       </grid>
+      <vspacer id="c5682">
+        <constraints>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+        </constraints>
+      </vspacer>
+      <vspacer id="cb022">
+        <constraints>
+          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+        </constraints>
+      </vspacer>
     </children>
   </grid>
 </form>
