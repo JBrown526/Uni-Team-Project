@@ -17,6 +17,8 @@ public class TravelAgent extends Page {
     private JButton backButton;
     private JPanel mainPanel;
     private JButton logoutButton;
+    private JButton turnoverReportButton;
+    private JButton salesReportButton;
     //endregion
 
     //================================================================================
@@ -26,6 +28,7 @@ public class TravelAgent extends Page {
         //================================================================================
         //region Button Listeners
         //================================================================================
+        //TODO: make reports separate page?
         blanksButton.addActionListener(e -> app.toBlanks(false));
 
         customersButton.addActionListener(new ActionListener() {
@@ -39,6 +42,13 @@ public class TravelAgent extends Page {
             public void actionPerformed(ActionEvent e) {
                 //TODO: Make transaction page(s)
                 // NOTE: May move to blank page
+            }
+        });
+        turnoverReportButton.addActionListener(e -> app.toStockTurnover(false));
+        salesReportButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //TODO: Make sales report page
             }
         });
 

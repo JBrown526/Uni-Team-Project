@@ -14,6 +14,7 @@ import ats.pages.guis.handlers.staff.StaffMembers;
 import ats.pages.guis.homepages.OfficeManager;
 import ats.pages.guis.homepages.SystemAdministrator;
 import ats.pages.guis.homepages.TravelAgent;
+import ats.pages.guis.reports.StockTurnover;
 
 import javax.swing.*;
 
@@ -134,6 +135,10 @@ public class App {
 
     public void toCommissionRateAdd(int staffID) {
         changeWindow(new CommissionRateAdd(this, staffID));
+    }
+
+    public void toStockTurnover(boolean managerView) {
+        changeWindow(new StockTurnover(this, managerView));
     }
 
     // returns user to login page and clears access credentials
