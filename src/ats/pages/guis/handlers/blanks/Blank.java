@@ -32,7 +32,7 @@ public class Blank extends TablePage implements Utilities {
     //region Constructor
     //================================================================================
     public Blank(App app, String blankID, boolean managerView) {
-        //TODO: set blank to void
+        //TODO: view associated sale
         this.blankID = blankID;
         credentials = app.getDBCredentials();
 
