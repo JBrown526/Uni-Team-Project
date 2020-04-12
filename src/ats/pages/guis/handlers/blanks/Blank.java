@@ -146,6 +146,10 @@ public class Blank extends TablePage implements Utilities {
             JOptionPane.showMessageDialog(null, "This blank has been removed from stock, it can no longer be used");
             passesChecks = false;
         }
+        if (isStatus(credentials, blankID, "RFND")) {
+            JOptionPane.showMessageDialog(null, "This blank has been refunded, it cannot be reassigned");
+            passesChecks = false;
+        }
         return passesChecks;
     }
 
@@ -171,6 +175,10 @@ public class Blank extends TablePage implements Utilities {
         }
         if (isStatus(credentials, blankID, "VOID")) {
             JOptionPane.showMessageDialog(null, "This blank has already been voided");
+            checksFailed++;
+        }
+        if (isStatus(credentials, blankID, "RFND")) {
+            JOptionPane.showMessageDialog(null, "This blank has been refunded, it cannot be voided");
             checksFailed++;
         }
 

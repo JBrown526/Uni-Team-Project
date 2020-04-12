@@ -40,6 +40,7 @@ public class Blanks extends TablePage implements Utilities {
     private JPanel filterPanel;
     private JCheckBox hideRemovedCheckBox;
     private JButton resetViewButton;
+    private JCheckBox hideRefundedCheckBox;
     //endregion
 
     //================================================================================
@@ -110,6 +111,7 @@ public class Blanks extends TablePage implements Utilities {
         hideAvailableCheckBox.addItemListener(e -> checkBoxSelected(hideAvailableCheckBox, "AVBL"));
         hideAssignedCheckBox.addItemListener(e -> checkBoxSelected(hideAssignedCheckBox, "ASGN"));
         hideRemovedCheckBox.addItemListener(e -> checkBoxSelected(hideRemovedCheckBox, "RMVD"));
+        hideRefundedCheckBox.addItemListener(e -> checkBoxSelected(hideRefundedCheckBox, "RFND"));
 
         blankTable.addMouseListener(new MouseAdapter() {
             @Override
