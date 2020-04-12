@@ -29,15 +29,17 @@ public class CustomerAdd extends Page {
         credentials = app.getDBCredentials();
         Utilities.fillCustomerStatusDropdown(credentials, statusComboBox);
 
-        backButton.addActionListener(e -> app.toCustomers(managerView));
-        logoutButton.addActionListener(e -> app.logout());
         applyButton.addActionListener(e -> {
             if (requirementsMet()) {
                 updateCustomer();
+                JOptionPane.showMessageDialog(null, "Staff member successfully added");
             } else {
                 JOptionPane.showMessageDialog(null, "A new customer must have a valid alias and name");
             }
         });
+
+        backButton.addActionListener(e -> app.toCustomers(managerView));
+        logoutButton.addActionListener(e -> app.logout());
     }
 
     @Override

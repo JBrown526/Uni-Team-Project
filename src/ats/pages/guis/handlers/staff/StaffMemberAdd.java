@@ -35,6 +35,7 @@ public class StaffMemberAdd extends Page implements Utilities, StaffUtilities {
         applyButton.addActionListener(e -> {
             if (requirementsMet()) {
                 updateStaffMember();
+                JOptionPane.showMessageDialog(null, "Staff member successfully added");
             } else {
                 JOptionPane.showMessageDialog(null, "A new user must have a valid Staff ID, Role, name and password");
             }
