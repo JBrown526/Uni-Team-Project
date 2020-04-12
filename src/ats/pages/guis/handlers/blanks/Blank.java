@@ -27,6 +27,7 @@ public class Blank extends TablePage implements Utilities {
     private JButton removeButton;
     private JButton voidButton;
     private JButton makeSaleButton;
+    private JButton refundSaleButton;
     //endregion
 
     //================================================================================
@@ -51,6 +52,14 @@ public class Blank extends TablePage implements Utilities {
         //region Button Listeners
         //================================================================================
         makeSaleButton.addActionListener(e -> app.toTransaction(blankID, managerView));
+        refundSaleButton.addActionListener(e -> {
+            if (isStatus(credentials, blankID, "SOLD")) {
+                updateStatus("RFND");
+            } else {
+                JOptionPane.showMessageDialog(null, "This blank has not been sold, it cannot be refunded.");
+            }
+        });
+
         removeButton.addActionListener(e -> {
             if (isAvailableForRemoval()) {
                 updateStatus("RMVD");
