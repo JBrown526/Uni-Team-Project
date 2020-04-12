@@ -8,6 +8,9 @@ import ats.pages.guis.handlers.commissions.CommissionRates;
 import ats.pages.guis.handlers.blanks.Blank;
 import ats.pages.guis.handlers.blanks.BlankAdd;
 import ats.pages.guis.handlers.blanks.Blanks;
+import ats.pages.guis.handlers.customers.Customer;
+import ats.pages.guis.handlers.customers.CustomerAdd;
+import ats.pages.guis.handlers.customers.Customers;
 import ats.pages.guis.handlers.exchangerates.ExchangeRate;
 import ats.pages.guis.handlers.exchangerates.ExchangeRateAdd;
 import ats.pages.guis.handlers.exchangerates.ExchangeRates;
@@ -151,6 +154,18 @@ public class App {
 
     public void toExchangeRateAdd() {
         changeWindow(new ExchangeRateAdd(this));
+    }
+
+    public void toCustomers(boolean managerView) {
+        changeWindow(new Customers(this, managerView));
+    }
+
+    public void toCustomer(String customerAlias, boolean managerView) {
+        changeWindow(new Customer(this, customerAlias, managerView));
+    }
+
+    public void toCustomerAdd(boolean managerView) {
+        changeWindow(new CustomerAdd(this, managerView));
     }
 
     public void toReports(boolean managerView) {
