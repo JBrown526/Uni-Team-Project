@@ -150,11 +150,11 @@ public class Transaction extends TablePage implements Utilities {
 
     private boolean isValuedCustomer(String alias) {
         try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
-            try (PreparedStatement ps = conn.prepareStatement("SELECT role_code FROM staff WHERE staff_id = ?")) {
+            try (PreparedStatement ps = conn.prepareStatement("SELECT status_code FROM customer WHERE customer_alias = ?")) {
                 ps.setString(1, alias);
                 try (ResultSet rs = ps.executeQuery()) {
                     rs.next();
-                    return rs.getString("role_code").equals("VD");
+                    return rs.getString("status_code").equals("VD");
                 }
             }
         } catch (SQLException sqle) {
