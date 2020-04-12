@@ -18,7 +18,7 @@ public interface CustomerUtilities {
                     return false;
                 }
             }
-            return !Utilities.isEmpty(nameField.getText());
+            return true;
         } catch (NumberFormatException nfe) {
             JOptionPane.showMessageDialog(null, "Discount rates must be in the form of a valid float");
         }

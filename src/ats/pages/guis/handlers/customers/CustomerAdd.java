@@ -50,7 +50,8 @@ public class CustomerAdd extends Page {
     private boolean requirementsMet() {
         if (!Utilities.isEmpty(aliasField.getText())) {
             if (!Utilities.customerExists(aliasField.getText(), credentials)) {
-                return CustomerUtilities.commonRequirementsMet(managerView, discountRateField, statusComboBox, nameField);
+                return CustomerUtilities.commonRequirementsMet(managerView, discountRateField, statusComboBox, nameField)
+                        && !Utilities.isEmpty(nameField.getText());
             }
             JOptionPane.showMessageDialog(null, "This alias is already in use, please select another one");
         }
@@ -68,7 +69,6 @@ public class CustomerAdd extends Page {
 
         String sqlFields = "customer_alias, status_code, name,";
         String sqlUpdate = "'" + alias + "', '" + statusCode + "', '" + name + "',";
-
 
         sqlFields += Utilities.isEmpty(discountRateString) ? "" : " discount_rate,";
         sqlUpdate += Utilities.isEmpty(discountRateString) ? "" : Float.parseFloat(discountRateString) + ",";

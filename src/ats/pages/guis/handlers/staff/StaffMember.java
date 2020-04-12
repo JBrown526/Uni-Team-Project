@@ -134,7 +134,7 @@ public class StaffMember extends TablePage implements Utilities, StaffUtilities 
 
         JTextField[] fields = {roleField, nameField, passwordField, phoneNumberField,
                 emailField, addressField, cityField, postcodeField};
-        String[] newFields = {newRole, newName, newPassword, newPhoneNumber,
+        String[] newValues = {newRole, newName, newPassword, newPhoneNumber,
                 newEmail, newAddress, newCity, newPostCode};
 
         String sqlUpdate = "";
@@ -158,8 +158,8 @@ public class StaffMember extends TablePage implements Utilities, StaffUtilities 
                 int insertPosition = 1;
 
                 // adds the new information to the statement and increments the insert position index if the field is not empty
-                for (String newField : newFields) {
-                    insertPosition = Utilities.setStatementValue(ps, newField, insertPosition);
+                for (String newValue : newValues) {
+                    insertPosition = Utilities.setStatementValue(ps, newValue, insertPosition);
                 }
 
                 ps.setInt(insertPosition, staffID);

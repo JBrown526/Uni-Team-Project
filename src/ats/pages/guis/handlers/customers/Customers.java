@@ -25,6 +25,7 @@ public class Customers extends TablePage {
     public Customers(App app, boolean managerView) {
         this.managerView = managerView;
         credentials = app.getDBCredentials();
+        selectedCustomer = "";
 
         populateTable();
 
