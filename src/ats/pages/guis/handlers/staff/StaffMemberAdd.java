@@ -81,11 +81,6 @@ public class StaffMemberAdd extends Page implements Utilities, StaffUtilities {
         String newRole = roleField.getText().toUpperCase();
         String newName = nameField.getText();
         String newPassword = String.valueOf(passwordField.getPassword());
-        String newPhoneNumber = phoneNumberField.getText();
-        String newEmail = emailField.getText();
-        String newAddress = addressField.getText();
-        String newCity = cityField.getText();
-        String newPostCode = postcodeField.getText();
 
         JTextField[] fields = {staffIDField, roleField, nameField, passwordField, phoneNumberField,
                 emailField, addressField, cityField, postcodeField};
@@ -94,33 +89,9 @@ public class StaffMemberAdd extends Page implements Utilities, StaffUtilities {
         String sqlUpdate = "'" + newStaffID + "', '" + newRole + "', '" + newName + "', '" + newPassword + "',";
 
         // adds relevant information the the sql string if the field has been filled in
-        sqlFields += Utilities.isEmpty(newPhoneNumber) ? "" : " phone_number,";
-        sqlUpdate += Utilities.isEmpty(newPhoneNumber) ? "" : " '" + newPhoneNumber + "',";
-        sqlFields += Utilities.isEmpty(newEmail) ? "" : " email,";
-        sqlUpdate += Utilities.isEmpty(newEmail) ? "" : " '" + newEmail + "',";
-        sqlFields += Utilities.isEmpty(newAddress) ? "" : " address,";
-        sqlUpdate += Utilities.isEmpty(newAddress) ? "" : " '" + newAddress + "',";
-        sqlFields += Utilities.isEmpty(newCity) ? "" : " city,";
-        sqlUpdate += Utilities.isEmpty(newCity) ? "" : " '" + newCity + "',";
-        sqlFields += Utilities.isEmpty(newPostCode) ? "" : " postcode,";
-        sqlUpdate += Utilities.isEmpty(newPostCode) ? "" : " '" + newPostCode + "',";
+        String[] sqlFragments = {sqlFields, sqlUpdate};
+        String sql = populatePersonInsertQuery("ats.staff", sqlFragments, phoneNumberField, emailField, addressField, cityField, postcodeField);
 
-        sqlFields = Utilities.removeLastCharacter(sqlFields);
-        sqlUpdate = Utilities.removeLastCharacter(sqlUpdate);
-        String sql;
-        sql = String.format("INSERT INTO ats.staff (%s) VALUES (%s);", sqlFields, sqlUpdate);
-
-        try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
-            try (PreparedStatement ps = conn.prepareStatement(sql)) {
-
-                ps.executeUpdate();
-
-                for (JTextField field : fields) {
-                    field.setText("");
-                }
-            }
-        } catch (SQLException sqle) {
-            sqle.printStackTrace();
-        }
+        commonInsertStatement(credentials, sql, fields);
     }
 }

@@ -1,5 +1,7 @@
 package ats.pages;
 
+import ats.common.Utilities;
+
 import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.sql.*;
@@ -45,6 +47,52 @@ public abstract class Page {
             e.printStackTrace();
         }
         return false;
+    }
+
+    protected static String populatePersonInsertQuery(String table, String[] sqlFragments, JTextField phoneNumberField,
+                                                      JTextField emailField, JTextField addressField, JTextField cityField,
+                                                      JTextField postcodeField) {
+        String sqlFields = sqlFragments[0];
+        String sqlUpdate = sqlFragments[1];
+
+        String phoneNumber = phoneNumberField.getText();
+        String email = emailField.getText();
+        String address = addressField.getText();
+        String city = cityField.getText();
+        String postcode = postcodeField.getText();
+
+        sqlFields += Utilities.isEmpty(phoneNumber) ? "" : " phone_number,";
+        sqlUpdate += Utilities.isEmpty(phoneNumber) ? "" : " '" + phoneNumber + "',";
+        sqlFields += Utilities.isEmpty(email) ? "" : " email,";
+        sqlUpdate += Utilities.isEmpty(email) ? "" : " '" + email + "',";
+        sqlFields += Utilities.isEmpty(address) ? "" : " address,";
+        sqlUpdate += Utilities.isEmpty(address) ? "" : " '" + address + "',";
+        sqlFields += Utilities.isEmpty(city) ? "" : " city,";
+        sqlUpdate += Utilities.isEmpty(city) ? "" : " '" + city + "',";
+        sqlFields += Utilities.isEmpty(postcode) ? "" : " postcode,";
+        sqlUpdate += Utilities.isEmpty(postcode) ? "" : " '" + postcode + "',";
+
+        sqlFields = Utilities.removeLastCharacter(sqlFields);
+        sqlUpdate = Utilities.removeLastCharacter(sqlUpdate);
+
+        String sql;
+        sql = String.format("INSERT INTO %s (%s) VALUES (%s);", table, sqlFields, sqlUpdate);
+        return sql;
+    }
+
+    protected static void commonInsertStatement(String[] credentials, String sql, JTextField[] fields) {
+        try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+
+                ps.executeUpdate();
+
+                for (JTextField field : fields) {
+                    field.setText("");
+                }
+            }
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+        }
     }
 
     private static final Pattern DATE_PATTERN = Pattern.compile(
