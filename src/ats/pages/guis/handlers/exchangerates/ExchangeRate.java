@@ -31,7 +31,7 @@ public class ExchangeRate extends TablePage {
             String date = dateField.getText();
             try {
                 float newExchangeRate = Float.parseFloat(rateString);
-                if (ExchangeRateUtilities.conditionsMet(currencyCode, date, credentials)) {
+                if (ExchangeRateUtilities.conditionsMet(currencyCode, date)) {
                     updateRate(currencyCode, newExchangeRate, date);
                 }
             } catch (NumberFormatException nfe) {

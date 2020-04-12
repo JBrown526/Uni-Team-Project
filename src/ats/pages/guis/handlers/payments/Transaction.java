@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.sql.*;
 
 public class Transaction extends TablePage implements Utilities {
+    private App app;
     String[] credentials;
     String blankID;
     boolean domesticSale;
@@ -28,6 +29,7 @@ public class Transaction extends TablePage implements Utilities {
     private JButton makePaymentButton;
 
     public Transaction(App app, String blankID, boolean managerView) {
+        this.app = app;
         this.blankID = blankID;
         credentials = app.getDBCredentials();
         Utilities.fillCustomerDropdown(credentials, aliasComboBox);
@@ -79,9 +81,8 @@ public class Transaction extends TablePage implements Utilities {
         try {
             Float.parseFloat(priceField.getText());
             Float.parseFloat(localTaxRateField.getText());
-            Float.parseFloat(otherTaxRateField.getText());
         } catch (NumberFormatException nfe) {
-            JOptionPane.showMessageDialog(null, "Price, local tax and other taxes must be in a positive float format");
+            JOptionPane.showMessageDialog(null, "Price and local tax must be in a positive float format");
             return false;
         }
         if (!Utilities.isEmpty(saleDateField.getText())) {
@@ -105,6 +106,11 @@ public class Transaction extends TablePage implements Utilities {
 
     private boolean interlineConditions() {
         if (!Utilities.isEmpty(otherTaxRateField.getText())) {
+            try {
+                Float.parseFloat(otherTaxRateField.getText());
+            } catch (NumberFormatException nfe) {
+                JOptionPane.showMessageDialog(null, "Other taxes must be in a positive float format");
+            }
             return true;
         }
         JOptionPane.showMessageDialog(null, "Please enter the miscelaneous tax rate");
@@ -169,32 +175,80 @@ public class Transaction extends TablePage implements Utilities {
 
     private float getCommissionRate() {
         float rate = 0;
-
-
+        try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
+            try (PreparedStatement ps = conn.prepareStatement("SELECT commission FROM commission WHERE blank_type = ? AND staff_id = ?")) {
+                ps.setInt(1, Integer.parseInt(blankID.substring(0, 3)));
+                ps.setInt(2, app.getStaffID());
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        rate = rs.getFloat("commission");
+                    }
+                }
+            }
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+        }
         return rate;
+    }
+
+    private void insertSale() {
+        try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
+            try (PreparedStatement ps = conn.prepareStatement("INSERT INTO sale VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
+                ps.setString(1, blankID);
+                ps.setString(2, String.valueOf(aliasComboBox.getSelectedItem()));
+                ps.setString(3, String.valueOf(currencyComboBox.getSelectedItem()));
+                ps.setString(4, saleDateField.getText());
+                ps.setFloat(5, Float.parseFloat(priceField.getText()));
+                ps.setFloat(6, getExchangeRate(String.valueOf(currencyComboBox.getSelectedItem())));
+                ps.setFloat(7, getCommissionRate());
+                ps.setInt(8, cardPaymentCheckBox.isSelected() ? 1 : 0);
+                ps.setInt(9, deferredPaymentCheckBox.isSelected() ? 1 : 0);
+                ps.setInt(10, 0);
+
+                ps.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        populateTable();
     }
 
     private void domesticSale() {
         if (passesConditions()) {
+            insertSale();
             try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
-                try (PreparedStatement ps = conn.prepareStatement("INSERT INTO sale VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
+                try (PreparedStatement ps = conn.prepareStatement("INSERT INTO taxes (blank_id, local_tax) VALUES (?, ?)")) {
                     ps.setString(1, blankID);
-                    ps.setString(2, String.valueOf(aliasComboBox.getSelectedItem()));
-                    ps.setString(3, String.valueOf(currencyComboBox.getSelectedItem()));
-                    ps.setString(4, saleDateField.getText());
-                    ps.setFloat(5, Float.parseFloat(priceField.getText()));
-                    ps.setFloat(6, getExchangeRate(String.valueOf(currencyComboBox.getSelectedItem())));
+                    ps.setFloat(2, Float.parseFloat(localTaxRateField.getText()));
+
                     ps.executeUpdate();
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+            populateTable();
+            JOptionPane.showMessageDialog(null, "Domestic sale made!");
+            mainPanel.remove(paymentDetailsPanel);
         }
     }
 
     private void interlineSale() {
         if (passesConditions()) {
+            insertSale();
+            try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
+                try (PreparedStatement ps = conn.prepareStatement("INSERT INTO taxes VALUES (?, ?, ?)")) {
+                    ps.setString(1, blankID);
+                    ps.setFloat(2, Float.parseFloat(localTaxRateField.getText()));
+                    ps.setFloat(3, Float.parseFloat(otherTaxRateField.getText()));
 
+                    ps.executeUpdate();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            populateTable();
+            JOptionPane.showMessageDialog(null, "Interline sale made!");
+            mainPanel.remove(paymentDetailsPanel);
         }
     }
 }
