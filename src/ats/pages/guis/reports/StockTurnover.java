@@ -99,6 +99,7 @@ public class StockTurnover extends TablePage {
             int[] splitDate = Arrays.stream(date.split("-"))
                     .mapToInt(Integer::parseInt)
                     .toArray();
+            splitDate[0] = splitDate[1] <= 1 ? --splitDate[0] : splitDate[0];
             splitDate[1] = splitDate[1] <= 1 ? 12 : --splitDate[1];
             reportStartDate = String.format("%04d-%02d-%02d", splitDate[0], splitDate[1], splitDate[2]);
 

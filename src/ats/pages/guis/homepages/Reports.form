@@ -106,24 +106,24 @@
           <text value="Stock Turnover"/>
         </properties>
       </component>
-      <component id="7b630" class="javax.swing.JButton" binding="interlineSalesButton" default-binding="true">
+      <component id="7b630" class="javax.swing.JButton" binding="individualSalesButton">
         <constraints>
           <grid row="4" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <background color="-1"/>
           <foreground color="-16777216"/>
-          <text value="Interline Sales"/>
+          <text value="Individual Reports"/>
         </properties>
       </component>
-      <component id="bcb46" class="javax.swing.JButton" binding="domesticSalesButton" default-binding="true">
+      <component id="bcb46" class="javax.swing.JButton" binding="globalSalesButton">
         <constraints>
           <grid row="5" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <background color="-1"/>
           <foreground color="-16777216"/>
-          <text value="Domestic Sales"/>
+          <text value="Global Reports"/>
         </properties>
       </component>
     </children>
