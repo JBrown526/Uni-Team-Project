@@ -35,6 +35,11 @@ public class Transaction extends TablePage implements Utilities {
         Utilities.fillCustomerDropdown(credentials, aliasComboBox);
         Utilities.fillCurrencyDropdown(credentials, currencyComboBox);
 
+        populateTable();
+        if (saleMade()) {
+            mainPanel.remove(paymentDetailsPanel);
+        }
+
         makePaymentButton.addActionListener(e -> {
             int blankType = Integer.parseInt(blankID.substring(0, 3));
             domesticSale = blankType < 400;
@@ -191,6 +196,22 @@ public class Transaction extends TablePage implements Utilities {
         return rate;
     }
 
+    private boolean saleMade() {
+        try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
+            try (PreparedStatement ps = conn.prepareStatement("SELECT blank_id FROM sale WHERE blank_id = ?")) {
+                ps.setString(1, blankID);
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        return true;
+                    }
+                }
+            }
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+        }
+        return false;
+    }
+
     private void insertSale() {
         try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
             try (PreparedStatement ps = conn.prepareStatement("INSERT INTO sale VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
@@ -213,6 +234,18 @@ public class Transaction extends TablePage implements Utilities {
         populateTable();
     }
 
+    private void setBlankToSold() {
+        try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
+            try (PreparedStatement ps = conn.prepareStatement("UPDATE blank SET date_sold = ?, blank_status = 'SOLD' WHERE blank_id = ?")) {
+                ps.setString(1, saleDateField.getText());
+                ps.setString(2, blankID);
+                ps.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void domesticSale() {
         if (passesConditions()) {
             insertSale();
@@ -222,13 +255,14 @@ public class Transaction extends TablePage implements Utilities {
                     ps.setFloat(2, Float.parseFloat(localTaxField.getText()));
 
                     ps.executeUpdate();
+                    setBlankToSold();
+                    populateTable();
+                    JOptionPane.showMessageDialog(null, "Domestic sale made!");
+                    mainPanel.remove(paymentDetailsPanel);
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            populateTable();
-            JOptionPane.showMessageDialog(null, "Domestic sale made!");
-            mainPanel.remove(paymentDetailsPanel);
         }
     }
 
@@ -242,13 +276,14 @@ public class Transaction extends TablePage implements Utilities {
                     ps.setFloat(3, Float.parseFloat(otherTaxField.getText()));
 
                     ps.executeUpdate();
+                    setBlankToSold();
+                    populateTable();
+                    JOptionPane.showMessageDialog(null, "Interline sale made!");
+                    mainPanel.remove(paymentDetailsPanel);
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            populateTable();
-            JOptionPane.showMessageDialog(null, "Interline sale made!");
-            mainPanel.remove(paymentDetailsPanel);
         }
     }
 }
