@@ -39,9 +39,9 @@ public class App {
     //================================================================================
     final JFrame window = new JFrame("Air Ticket Sales");
 
-    private String url = "jdbc:mysql://127.0.0.1:3306/ats?autoReconnect=true&useSSL=false";
-    private String user = "root";
-    private String password = "JBMySQLAdmin01";
+    private String url = "";
+    private String user = "";
+    private String password = "";
     private String[] credentials = {url, user, password};
 
     private Page currentPage;

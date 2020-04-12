@@ -1,0 +1,326 @@
+-- MySQL dump 10.13  Distrib 8.0.19, for Win64 (x86_64)
+--
+-- Host: 127.0.0.1    Database: ats
+-- ------------------------------------------------------
+-- Server version	8.0.19
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT = @@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS = @@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION = @@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE = @@TIME_ZONE */;
+/*!40103 SET TIME_ZONE = '+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS = @@UNIQUE_CHECKS, UNIQUE_CHECKS = 0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS = @@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS = 0 */;
+/*!40101 SET @OLD_SQL_MODE = @@SQL_MODE, SQL_MODE = 'NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES = @@SQL_NOTES, SQL_NOTES = 0 */;
+
+--
+-- Table structure for table `audit_coupon`
+--
+
+DROP TABLE IF EXISTS `audit_coupon`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `audit_coupon`
+(
+    `audit_coupon_id` int          NOT NULL,
+    `blank_id`        varchar(255) NOT NULL,
+    `audit_info`      varchar(255) DEFAULT NULL,
+    PRIMARY KEY (`audit_coupon_id`),
+    UNIQUE KEY `audit_coupon_id_UNIQUE` (`audit_coupon_id`),
+    KEY `blank_id_adtcpn_idx` (`blank_id`),
+    CONSTRAINT `blank_id_adtcpn` FOREIGN KEY (`blank_id`) REFERENCES `blank` (`blank_id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `blank`
+--
+
+DROP TABLE IF EXISTS `blank`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `blank`
+(
+    `blank_type`    int          NOT NULL,
+    `blank_id`      varchar(255) NOT NULL,
+    `staff_id`      int                   DEFAULT NULL,
+    `date_received` date         NOT NULL,
+    `date_assigned` date                  DEFAULT NULL,
+    `date_sold`     date                  DEFAULT NULL,
+    `blank_status`  char(4)      NOT NULL DEFAULT 'AVBL',
+    PRIMARY KEY (`blank_id`),
+    KEY `staff_id_idx` (`staff_id`),
+    KEY `blank_type_idx` (`blank_type`),
+    KEY `blank_status_blk_idx` (`blank_status`),
+    CONSTRAINT `blank_status_blk` FOREIGN KEY (`blank_status`) REFERENCES `blank_status` (`blank_status`),
+    CONSTRAINT `blank_type_blk` FOREIGN KEY (`blank_type`) REFERENCES `blank_type` (`blank_type`),
+    CONSTRAINT `staff_id_blk` FOREIGN KEY (`staff_id`) REFERENCES `staff` (`staff_id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `blank_status`
+--
+
+DROP TABLE IF EXISTS `blank_status`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `blank_status`
+(
+    `blank_status` char(4) NOT NULL,
+    PRIMARY KEY (`blank_status`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `blank_type`
+--
+
+DROP TABLE IF EXISTS `blank_type`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `blank_type`
+(
+    `blank_type` int NOT NULL,
+    PRIMARY KEY (`blank_type`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `card`
+--
+
+DROP TABLE IF EXISTS `card`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `card`
+(
+    `customer_alias` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+    `card_number`    varchar(20) COLLATE utf8mb4_cs_0900_ai_ci                     NOT NULL,
+    `card_holder`    varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+    `expiry_date`    date                                                          NOT NULL,
+    PRIMARY KEY (`customer_alias`),
+    CONSTRAINT `customer_alias_card` FOREIGN KEY (`customer_alias`) REFERENCES `customer` (`customer_alias`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_cs_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `commission`
+--
+
+DROP TABLE IF EXISTS `commission`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `commission`
+(
+    `blank_type` int   NOT NULL,
+    `staff_id`   int   NOT NULL,
+    `commission` float NOT NULL,
+    `date_set`   date DEFAULT NULL,
+    PRIMARY KEY (`blank_type`, `staff_id`),
+    KEY `staff_id_idx` (`staff_id`),
+    CONSTRAINT `blank_type_comm` FOREIGN KEY (`blank_type`) REFERENCES `blank_type` (`blank_type`),
+    CONSTRAINT `staff_id_comm` FOREIGN KEY (`staff_id`) REFERENCES `staff` (`staff_id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `customer`
+--
+
+DROP TABLE IF EXISTS `customer`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `customer`
+(
+    `customer_alias` varchar(255) NOT NULL,
+    `status_code`    char(2)      NOT NULL,
+    `name`           varchar(255) NOT NULL,
+    `discount_rate`  float        DEFAULT NULL,
+    `phone_number`   varchar(15)  DEFAULT NULL,
+    `email`          varchar(255) DEFAULT NULL,
+    `address`        varchar(255) DEFAULT NULL,
+    `city`           varchar(255) DEFAULT NULL,
+    `postcode`       varchar(255) DEFAULT NULL,
+    PRIMARY KEY (`customer_alias`),
+    KEY `status_code_cstmr_idx` (`status_code`),
+    CONSTRAINT `status_code_cstmr` FOREIGN KEY (`status_code`) REFERENCES `customer_status` (`status_code`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `customer_status`
+--
+
+DROP TABLE IF EXISTS `customer_status`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `customer_status`
+(
+    `status_code`        char(2)      NOT NULL,
+    `status_name`        varchar(255) NOT NULL,
+    `status_description` varchar(255) DEFAULT NULL,
+    PRIMARY KEY (`status_code`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `exchange_rate`
+--
+
+DROP TABLE IF EXISTS `exchange_rate`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `exchange_rate`
+(
+    `currency_code` char(3) NOT NULL,
+    `exchange_rate` float   NOT NULL,
+    `date_set`      date    NOT NULL,
+    PRIMARY KEY (`currency_code`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `flight_coupon`
+--
+
+DROP TABLE IF EXISTS `flight_coupon`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `flight_coupon`
+(
+    `flight_coupon_id` int          NOT NULL,
+    `blank_id`         varchar(255) NOT NULL,
+    `flight_code`      varchar(255) NOT NULL,
+    PRIMARY KEY (`flight_coupon_id`),
+    UNIQUE KEY `flight_coupon_id_UNIQUE` (`flight_coupon_id`),
+    KEY `blank_id_fltcpn_idx` (`blank_id`),
+    CONSTRAINT `blank_id_fltcpn` FOREIGN KEY (`blank_id`) REFERENCES `blank` (`blank_id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `role`
+--
+
+DROP TABLE IF EXISTS `role`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `role`
+(
+    `role_code`        char(2)      NOT NULL,
+    `role_name`        varchar(255) NOT NULL,
+    `role_description` varchar(255) DEFAULT NULL,
+    PRIMARY KEY (`role_code`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `sale`
+--
+
+DROP TABLE IF EXISTS `sale`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sale`
+(
+    `blank_id`        varchar(255) NOT NULL,
+    `customer_alias`  varchar(255) NOT NULL,
+    `currency`        char(3)      NOT NULL,
+    `sale_date`       date         NOT NULL,
+    `amount`          float        NOT NULL,
+    `exchange_rate`   float        NOT NULL,
+    `commission_rate` float        NOT NULL,
+    `card_payment`    tinyint      NOT NULL,
+    `paid`            tinyint      NOT NULL,
+    `refunded`        tinyint      NOT NULL DEFAULT '0',
+    PRIMARY KEY (`blank_id`),
+    KEY `customer_alias_sale_idx` (`customer_alias`),
+    KEY `currency_sale_idx` (`currency`),
+    CONSTRAINT `blank_id_sale` FOREIGN KEY (`blank_id`) REFERENCES `blank` (`blank_id`),
+    CONSTRAINT `currency_sale` FOREIGN KEY (`currency`) REFERENCES `exchange_rate` (`currency_code`),
+    CONSTRAINT `customer_alias_sale` FOREIGN KEY (`customer_alias`) REFERENCES `customer` (`customer_alias`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `staff`
+--
+
+DROP TABLE IF EXISTS `staff`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `staff`
+(
+    `staff_id`     int          NOT NULL,
+    `role_code`    char(2)      NOT NULL,
+    `name`         varchar(255) NOT NULL,
+    `password`     varchar(255) NOT NULL,
+    `phone_number` varchar(15)  DEFAULT NULL,
+    `email`        varchar(255) DEFAULT NULL,
+    `address`      varchar(255) DEFAULT NULL,
+    `city`         varchar(255) DEFAULT NULL,
+    `postcode`     varchar(255) DEFAULT NULL,
+    PRIMARY KEY (`staff_id`),
+    KEY `role_code_idx` (`role_code`),
+    CONSTRAINT `role_code_stf` FOREIGN KEY (`role_code`) REFERENCES `role` (`role_code`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `taxes`
+--
+
+DROP TABLE IF EXISTS `taxes`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `taxes`
+(
+    `blank_id`  varchar(255) NOT NULL,
+    `local_tax` float DEFAULT NULL,
+    `other_tax` float DEFAULT NULL,
+    PRIMARY KEY (`blank_id`),
+    CONSTRAINT `blank_id_tax` FOREIGN KEY (`blank_id`) REFERENCES `sale` (`blank_id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+/*!40103 SET TIME_ZONE = @OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE = @OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS = @OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS = @OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT = @OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS = @OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
+
+-- Dump completed on 2020-04-12 16:30:37
