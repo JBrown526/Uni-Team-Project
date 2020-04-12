@@ -30,14 +30,12 @@ public class CardDetails extends TablePage {
 
         applyButton.addActionListener(e -> {
             if (requirementsMet()) {
-                System.out.println("here");
-                if (customerAlias == null) {
-                    System.out.println("also here");
+                if (!CardUtilities.customerHasCard(customerAlias, credentials)) {
                     insertDetails();
                 } else {
-                    System.out.println("shouldn't be here");
                     updateDetails();
                 }
+                JOptionPane.showMessageDialog(null, "Changes successfully applied");
             }
         });
 
@@ -101,6 +99,25 @@ public class CardDetails extends TablePage {
     }
 
     private void updateDetails() {
+        JTextField[] fields = {cardNumberField, cardHolderField, expiryDateField};
+        String sql = "UPDATE card SET card_number = ?, card_holder = ?, expiry_date = ?";
 
+        try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setString(1, cardNumberField.getText());
+                ps.setString(2, cardHolderField.getText());
+                ps.setString(3, expiryDateField.getText());
+
+                ps.executeUpdate();
+
+                for (JTextField field : fields) {
+                    field.setText("");
+                }
+
+                populateTable();
+            }
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+        }
     }
 }
