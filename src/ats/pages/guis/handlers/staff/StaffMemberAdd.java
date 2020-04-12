@@ -36,7 +36,7 @@ public class StaffMemberAdd extends Page implements Utilities, StaffUtilities {
             if (requirementsMet()) {
                 updateStaffMember();
             } else {
-                JOptionPane.showMessageDialog(null, "A new User must have a valid Staff ID, Role, name and password");
+                JOptionPane.showMessageDialog(null, "A new user must have a valid Staff ID, Role, name and password");
             }
         });
 

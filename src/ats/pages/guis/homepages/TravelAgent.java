@@ -28,15 +28,8 @@ public class TravelAgent extends Page {
         //================================================================================
         //region Button Listeners
         //================================================================================
-        //TODO: make reports separate page?
         blanksButton.addActionListener(e -> app.toBlanks(false));
-
-        customersButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //TODO: View customers page(s)
-            }
-        });
+        customersButton.addActionListener(e -> app.toCustomers(false));
         transactionButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

@@ -27,39 +27,51 @@ public interface Utilities {
     }
 
     static boolean staffExists(int id, String[] credentials) {
-        boolean staffExists = false;
-
         try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
             try (PreparedStatement ps = conn.prepareStatement("SELECT staff_id FROM staff WHERE staff_id = ?;")) {
                 ps.setInt(1, id);
                 try (ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
-                        staffExists = true;
+                        return true;
                     }
                 }
             }
         } catch (SQLException sqle) {
             sqle.printStackTrace();
         }
-        return staffExists;
+        return false;
     }
 
     static boolean blankExists(String id, String[] credentials) {
-        boolean staffExists = false;
-
         try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
             try (PreparedStatement ps = conn.prepareStatement("SELECT blank_id FROM blank WHERE blank_id = ?;")) {
                 ps.setString(1, id);
                 try (ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
-                        staffExists = true;
+                        return true;
                     }
                 }
             }
         } catch (SQLException sqle) {
             sqle.printStackTrace();
         }
-        return staffExists;
+        return false;
+    }
+
+    static boolean customerExists(String id, String[] credentials) {
+        try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
+            try (PreparedStatement ps = conn.prepareStatement("SELECT customer_alias FROM customer WHERE customer_alias = ?;")) {
+                ps.setString(1, id);
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        return true;
+                    }
+                }
+            }
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+        }
+        return false;
     }
 
     static void fillTypeDropdown(String[] credentials, JComboBox typeSelectBox, String table) {
@@ -90,6 +102,24 @@ public interface Utilities {
                     }
                     final DefaultComboBoxModel<Integer> model = new DefaultComboBoxModel<>(ids);
                     staffSelectBox.setModel(model);
+                }
+            }
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+        }
+    }
+
+    static void fillCustomerStatusDropdown(String[] credentials, JComboBox statusBox) {
+        try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
+            try (PreparedStatement ps = conn.prepareStatement("SELECT status_code FROM customer_status " +
+                    "ORDER BY IF(status_code = 'RG', NULL, status_code)")) {
+                try (ResultSet rs = ps.executeQuery()) {
+                    Vector<String> ids = new Vector<>();
+                    while (rs.next()) {
+                        ids.add(rs.getString("status_code"));
+                    }
+                    final DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>(ids);
+                    statusBox.setModel(model);
                 }
             }
         } catch (SQLException sqle) {
