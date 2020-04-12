@@ -217,7 +217,7 @@
               <text value="Deferred Payment"/>
             </properties>
           </component>
-          <component id="ea59b" class="javax.swing.JTextField" binding="localTaxRateField">
+          <component id="ea59b" class="javax.swing.JTextField" binding="localTaxField">
             <constraints>
               <grid row="1" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>
@@ -236,10 +236,10 @@
             <properties>
               <background color="-986896"/>
               <foreground color="-16777216"/>
-              <text value="Local Tax Rate:"/>
+              <text value="Local Tax:"/>
             </properties>
           </component>
-          <component id="e02af" class="javax.swing.JTextField" binding="otherTaxRateField">
+          <component id="e02af" class="javax.swing.JTextField" binding="otherTaxField">
             <constraints>
               <grid row="1" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>
@@ -258,7 +258,7 @@
             <properties>
               <background color="-986896"/>
               <foreground color="-16777216"/>
-              <text value="Other Tax Rate:"/>
+              <text value="Other Tax:"/>
             </properties>
           </component>
           <component id="d5e1b" class="javax.swing.JButton" binding="makePaymentButton" default-binding="true">

@@ -22,8 +22,8 @@ public class Transaction extends TablePage implements Utilities {
     private JComboBox currencyComboBox;
     private JTextField saleDateField;
     private JTextField priceField;
-    private JTextField localTaxRateField;
-    private JTextField otherTaxRateField;
+    private JTextField localTaxField;
+    private JTextField otherTaxField;
     private JCheckBox cardPaymentCheckBox;
     private JCheckBox deferredPaymentCheckBox;
     private JButton makePaymentButton;
@@ -80,7 +80,7 @@ public class Transaction extends TablePage implements Utilities {
     private boolean generalConditions() {
         try {
             Float.parseFloat(priceField.getText());
-            Float.parseFloat(localTaxRateField.getText());
+            Float.parseFloat(localTaxField.getText());
         } catch (NumberFormatException nfe) {
             JOptionPane.showMessageDialog(null, "Price and local tax must be in a positive float format");
             return false;
@@ -88,7 +88,7 @@ public class Transaction extends TablePage implements Utilities {
         if (!Utilities.isEmpty(saleDateField.getText())) {
             if (isValidDate(saleDateField.getText())) {
                 if (!Utilities.isEmpty(priceField.getText())) {
-                    if (!Utilities.isEmpty(localTaxRateField.getText())) {
+                    if (!Utilities.isEmpty(localTaxField.getText())) {
                         return true;
                     }
                     JOptionPane.showMessageDialog(null, "Please enter the local tax rate");
@@ -105,9 +105,9 @@ public class Transaction extends TablePage implements Utilities {
     }
 
     private boolean interlineConditions() {
-        if (!Utilities.isEmpty(otherTaxRateField.getText())) {
+        if (!Utilities.isEmpty(otherTaxField.getText())) {
             try {
-                Float.parseFloat(otherTaxRateField.getText());
+                Float.parseFloat(otherTaxField.getText());
             } catch (NumberFormatException nfe) {
                 JOptionPane.showMessageDialog(null, "Other taxes must be in a positive float format");
             }
@@ -219,7 +219,7 @@ public class Transaction extends TablePage implements Utilities {
             try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
                 try (PreparedStatement ps = conn.prepareStatement("INSERT INTO taxes (blank_id, local_tax) VALUES (?, ?)")) {
                     ps.setString(1, blankID);
-                    ps.setFloat(2, Float.parseFloat(localTaxRateField.getText()));
+                    ps.setFloat(2, Float.parseFloat(localTaxField.getText()));
 
                     ps.executeUpdate();
                 }
@@ -238,8 +238,8 @@ public class Transaction extends TablePage implements Utilities {
             try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
                 try (PreparedStatement ps = conn.prepareStatement("INSERT INTO taxes VALUES (?, ?, ?)")) {
                     ps.setString(1, blankID);
-                    ps.setFloat(2, Float.parseFloat(localTaxRateField.getText()));
-                    ps.setFloat(3, Float.parseFloat(otherTaxRateField.getText()));
+                    ps.setFloat(2, Float.parseFloat(localTaxField.getText()));
+                    ps.setFloat(3, Float.parseFloat(otherTaxField.getText()));
 
                     ps.executeUpdate();
                 }
