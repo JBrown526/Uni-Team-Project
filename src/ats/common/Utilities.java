@@ -126,4 +126,39 @@ public interface Utilities {
             sqle.printStackTrace();
         }
     }
+
+    static void fillCustomerDropdown(String[] credentials, JComboBox customerBox) {
+        try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
+            try (PreparedStatement ps = conn.prepareStatement("SELECT customer_alias FROM customer " +
+                    "ORDER BY IF(customer_alias = 'Anon', NULL, customer_alias)")) {
+                try (ResultSet rs = ps.executeQuery()) {
+                    Vector<String> aliases = new Vector<>();
+                    while (rs.next()) {
+                        aliases.add(rs.getString("customer_alias"));
+                    }
+                    final DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>(aliases);
+                    customerBox.setModel(model);
+                }
+            }
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+        }
+    }
+
+    static void fillCurrencyDropdown(String[] credentials, JComboBox currencyBox) {
+        try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
+            try (PreparedStatement ps = conn.prepareStatement("SELECT currency_code FROM exchange_rate")) {
+                try (ResultSet rs = ps.executeQuery()) {
+                    Vector<String> code = new Vector<>();
+                    while (rs.next()) {
+                        code.add(rs.getString("currency_code"));
+                    }
+                    final DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>(code);
+                    currencyBox.setModel(model);
+                }
+            }
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+        }
+    }
 }

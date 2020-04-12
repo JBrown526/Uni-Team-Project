@@ -33,7 +33,7 @@ public class ExchangeRateAdd extends Page implements Utilities, ExchangeRateUtil
             try {
                 float newExchangeRate = Float.parseFloat(rateString);
                 if (!ExchangeRateUtilities.exchangeRateExists(currencyCode, credentials)) {
-                    if (ExchangeRateUtilities.conditionsMet(currencyCode, date, credentials)) {
+                    if (ExchangeRateUtilities.conditionsMet(currencyCode, date)) {
                         updateRate(currencyCode, newExchangeRate, date);
                     }
                 } else {

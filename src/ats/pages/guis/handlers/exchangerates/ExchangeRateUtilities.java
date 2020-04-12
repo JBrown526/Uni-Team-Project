@@ -10,24 +10,22 @@ import java.util.regex.Pattern;
 public interface ExchangeRateUtilities {
 
     static boolean exchangeRateExists(String currencyCode, String[] credentials) {
-        boolean exchangeRateExists = false;
-
         try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
             try (PreparedStatement ps = conn.prepareStatement("SELECT currency_code FROM exchange_rate WHERE currency_code = ?;")) {
                 ps.setString(1, currencyCode);
                 try (ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
-                        exchangeRateExists = true;
+                        return true;
                     }
                 }
             }
         } catch (SQLException sqle) {
             sqle.printStackTrace();
         }
-        return exchangeRateExists;
+        return false;
     }
 
-    static boolean conditionsMet(String currencyCode, String date, String[] credentials) {
+    static boolean conditionsMet(String currencyCode, String date) {
         if (Pattern.matches("[A-Z][A-Z][A-Z]", currencyCode)) {
             if (Page.isValidDate(date) && !Utilities.isEmpty(date)) {
                 JOptionPane.showMessageDialog(null, "Exchange rate successfully added");
