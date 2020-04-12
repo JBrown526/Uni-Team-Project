@@ -8,6 +8,7 @@ import ats.pages.guis.handlers.commissions.CommissionRates;
 import ats.pages.guis.handlers.blanks.Blank;
 import ats.pages.guis.handlers.blanks.BlankAdd;
 import ats.pages.guis.handlers.blanks.Blanks;
+import ats.pages.guis.handlers.customers.CardDetails;
 import ats.pages.guis.handlers.customers.Customer;
 import ats.pages.guis.handlers.customers.CustomerAdd;
 import ats.pages.guis.handlers.customers.Customers;
@@ -166,6 +167,10 @@ public class App {
 
     public void toCustomerAdd(boolean managerView) {
         changeWindow(new CustomerAdd(this, managerView));
+    }
+
+    public void toCardDetails(String customerAlias, boolean managerView) {
+        changeWindow(new CardDetails(this, customerAlias, managerView));
     }
 
     public void toReports(boolean managerView) {

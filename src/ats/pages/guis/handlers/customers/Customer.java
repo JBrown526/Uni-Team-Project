@@ -24,6 +24,7 @@ public class Customer extends TablePage {
     private JTextField emailField;
     private JComboBox statusComboBox;
     private JTextField discountRateField;
+    private JButton viewCardDetailsButton;
 
     public Customer(App app, String customerAlias, boolean managerView) {
         this.customerAlias = customerAlias;
@@ -38,6 +39,7 @@ public class Customer extends TablePage {
                 JOptionPane.showMessageDialog(null, "Customer successfully updated!");
             }
         });
+        viewCardDetailsButton.addActionListener(e -> app.toCardDetails(customerAlias, managerView));
 
         backButton.addActionListener(e -> app.toCustomers(managerView));
         logoutButton.addActionListener(e -> app.logout());
