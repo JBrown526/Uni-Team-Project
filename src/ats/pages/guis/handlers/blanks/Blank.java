@@ -26,13 +26,13 @@ public class Blank extends TablePage implements Utilities {
     private JTextField dateField;
     private JButton removeButton;
     private JButton voidButton;
+    private JButton makeSaleButton;
     //endregion
 
     //================================================================================
     //region Constructor
     //================================================================================
     public Blank(App app, String blankID, boolean managerView) {
-        //TODO: view associated sale
         this.blankID = blankID;
         credentials = app.getDBCredentials();
 
@@ -50,13 +50,13 @@ public class Blank extends TablePage implements Utilities {
         //================================================================================
         //region Button Listeners
         //================================================================================
+        makeSaleButton.addActionListener(e -> app.toTransaction(blankID, managerView));
         removeButton.addActionListener(e -> {
             if (isAvailableForRemoval()) {
                 updateStatus("RMVD");
                 app.toBlanks(managerView);
             }
         });
-
         voidButton.addActionListener(e -> {
             if (isAvailableForVoiding()) {
                 updateStatus("VOID");

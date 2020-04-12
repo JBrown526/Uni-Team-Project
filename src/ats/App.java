@@ -15,6 +15,7 @@ import ats.pages.guis.handlers.customers.Customers;
 import ats.pages.guis.handlers.exchangerates.ExchangeRate;
 import ats.pages.guis.handlers.exchangerates.ExchangeRateAdd;
 import ats.pages.guis.handlers.exchangerates.ExchangeRates;
+import ats.pages.guis.handlers.payments.Transaction;
 import ats.pages.guis.handlers.staff.StaffMember;
 import ats.pages.guis.handlers.staff.StaffMemberAdd;
 import ats.pages.guis.handlers.staff.StaffMembers;
@@ -171,6 +172,10 @@ public class App {
 
     public void toCardDetails(String customerAlias, boolean managerView) {
         changeWindow(new CardDetails(this, customerAlias, managerView));
+    }
+
+    public void toTransaction(String blankID, boolean managerview) {
+        changeWindow(new Transaction(this, blankID, managerview));
     }
 
     public void toReports(boolean managerView) {
