@@ -7,10 +7,12 @@ import java.util.Vector;
 
 public interface Utilities {
 
+    // checks if a field is empty
     static boolean isEmpty(String fieldValue) {
         return fieldValue.equals("");
     }
 
+    // removes the last character from a string
     static String removeLastCharacter(String str) {
         return Optional.ofNullable(str)
                 .filter(sStr -> sStr.length() != 0)
