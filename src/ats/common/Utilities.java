@@ -18,6 +18,7 @@ public interface Utilities {
                 .orElse(str);
     }
 
+    // sets the value of a given statement compnent in a prepared statement
     static int setStatementValue(PreparedStatement ps, String str, int i) throws SQLException {
         if (!isEmpty(str)) {
             ps.setString(i, str);
@@ -26,6 +27,7 @@ public interface Utilities {
         return i;
     }
 
+    // checks if a staff member exists in the database
     static boolean staffExists(int id, String[] credentials) {
         try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
             try (PreparedStatement ps = conn.prepareStatement("SELECT staff_id FROM staff WHERE staff_id = ?;")) {
@@ -42,6 +44,7 @@ public interface Utilities {
         return false;
     }
 
+    // checks if a blank exists in the database
     static boolean blankExists(String id, String[] credentials) {
         try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
             try (PreparedStatement ps = conn.prepareStatement("SELECT blank_id FROM blank WHERE blank_id = ?;")) {
@@ -57,7 +60,8 @@ public interface Utilities {
         }
         return false;
     }
-
+    
+    // checks if customer exists in the database
     static boolean customerExists(String id, String[] credentials) {
         try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
             try (PreparedStatement ps = conn.prepareStatement("SELECT customer_alias FROM customer WHERE customer_alias = ?;")) {
@@ -74,6 +78,7 @@ public interface Utilities {
         return false;
     }
 
+    // fiils a dropdown with types of available blanks
     static void fillTypeDropdown(String[] credentials, JComboBox typeSelectBox, String table) {
         try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
             String sql = String.format("SELECT * FROM %s", table);
@@ -92,6 +97,7 @@ public interface Utilities {
         }
     }
 
+    // fills a dropdown with available staff members
     static void fillStaffDropdown(String[] credentials, JComboBox staffSelectBox) {
         try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
             try (PreparedStatement ps = conn.prepareStatement("SELECT staff_id FROM staff")) {
@@ -109,6 +115,7 @@ public interface Utilities {
         }
     }
 
+    // fills a dropdown with available customer status codes
     static void fillCustomerStatusDropdown(String[] credentials, JComboBox statusBox) {
         try (Connection conn = DriverManager.getConnection(credentials[0], credentials[1], credentials[2])) {
             try (PreparedStatement ps = conn.prepareStatement("SELECT status_code FROM customer_status " +
